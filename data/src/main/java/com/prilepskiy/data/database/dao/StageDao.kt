@@ -1,0 +1,29 @@
+package com.prilepskiy.data.database.dao
+
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import com.prilepskiy.data.database.entity.NoteEntity
+import com.prilepskiy.data.database.entity.StageEntity
+import kotlinx.coroutines.flow.Flow
+
+@Dao
+interface StageDao {
+    @Query("SELECT * FROM StageEntity")
+    suspend  fun getAllNote(): Flow<List<StageEntity>>
+
+    @Query("SELECT * FROM NoteEntity WHERE pointId=:id")
+    suspend fun getStageFromPoint(id: Long): Flow<List<StageEntity>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(noteEntity: StageEntity)
+
+    @Query("SELECT * FROM  NoteEntity WHERE pointId=:id")
+    suspend  fun getStageById(id: Long): Flow<StageEntity>
+
+    @Query("DELETE FROM  NoteEntity WHERE pointId=:id")
+    suspend fun deleteStage(id: Long)
+
+
+}
