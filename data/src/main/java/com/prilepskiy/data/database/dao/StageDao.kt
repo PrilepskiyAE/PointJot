@@ -13,16 +13,16 @@ interface StageDao {
     @Query("SELECT * FROM StageEntity")
     suspend  fun getAllStage(): List<StageEntity>
 
-    @Query("SELECT * FROM NoteEntity WHERE pointId=:id")
+    @Query("SELECT * FROM StageEntity WHERE pointId=:id")
     suspend fun getStageFromPoint(id: Long): List<StageEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(noteEntity: StageEntity)
 
-    @Query("SELECT * FROM  NoteEntity WHERE pointId=:id")
+    @Query("SELECT * FROM  StageEntity WHERE pointId=:id")
     suspend  fun getStageById(id: Long): StageEntity
 
-    @Query("DELETE FROM  NoteEntity WHERE pointId=:id")
+    @Query("DELETE FROM  StageEntity WHERE stageId=:id")
     suspend fun deleteStage(id: Long)
 
 
