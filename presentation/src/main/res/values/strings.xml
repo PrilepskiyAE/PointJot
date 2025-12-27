@@ -5,4 +5,9 @@
     <string name="loading">Идет загрузка</string>
     <string name="button_repite">Повторить</string>
     <string name="button_clear">Clear</string>
+    <string name="main_screen_title">Цели</string>
+    <string name="main_screen_active">Активные</string>
+    <string name="main_screen_closed">Завершенные</string>
+    <string name="empty_point">Нет целей</string>
+    <string name="main_screen_btn_add">Добавить</string>
 </resources>

@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.prilepskiy.common.Spaces
 import com.prilepskiy.presentation.R
 
 @Composable
@@ -21,7 +22,7 @@ fun ErrorMessageComponent(textError: String, onClickClear: () -> Unit) {
             Button(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(15.dp), onClick = onClickClear
+                    .padding(Spaces.space16), onClick = onClickClear
             ) {
                 Text(stringResource(R.string.button_repite))
             }

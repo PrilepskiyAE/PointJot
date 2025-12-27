@@ -1,14 +1,7 @@
-package com.prilepskiy.presentation.mainScreen.viewModel
+package com.prilepskiy.presentation.mainScreen
 
-import android.util.Log
-import androidx.lifecycle.viewModelScope
 import com.prilepskiy.common.MviBaseViewModel
 import com.prilepskiy.common.Reducer
-import com.prilepskiy.common.subscribe
-import com.prilepskiy.presentation.mainScreen.MainAction
-import com.prilepskiy.presentation.mainScreen.MainIntent
-import com.prilepskiy.presentation.mainScreen.MainReducer
-import com.prilepskiy.presentation.mainScreen.MainState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -17,7 +10,12 @@ class MainViewModel @Inject constructor(
     private val mainReducer: MainReducer, ) : MviBaseViewModel<MainState, MainAction, MainIntent>() {
     override var reducer: Reducer<MainAction, MainState> = mainReducer
 
+
     override fun initState(): MainState = MainState()
+
+    init {
+
+    }
 
     override fun handleIntent(intent: MainIntent) {
         when (intent) {
