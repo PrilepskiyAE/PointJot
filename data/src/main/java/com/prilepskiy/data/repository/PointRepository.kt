@@ -34,5 +34,8 @@ class PointRepository @Inject constructor(
     fun getCategory(categoryId: Long): Flow<List<PointEntity>> = emitFlow {
         dao.getCategory(categoryId)
     }
+    fun deletePoint(id: Long) = emitFlow {
+        dao.deletePoint(id)
+    }
 
 }

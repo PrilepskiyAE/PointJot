@@ -3,6 +3,8 @@ package com.prilepskiy.domain.stageUseCase
 import com.prilepskiy.data.database.entity.StageEntity
 import com.prilepskiy.data.repository.StageRepository
 import com.prilepskiy.domain.model.StageModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -17,6 +19,6 @@ class AddStageUseCase @Inject constructor(private val repository: StageRepositor
                 label = stageModel.label,
                 isActive = stageModel.isActive
             )
-        )
+        ).flowOn(Dispatchers.IO)
     }
 }
