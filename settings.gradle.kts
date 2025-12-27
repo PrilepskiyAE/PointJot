@@ -23,3 +23,5 @@ rootProject.name = "PointJot"
 include(":app")
 include(":common")
 include(":presentation")
+include(":data")
+include(":domain")

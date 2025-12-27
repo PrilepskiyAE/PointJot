@@ -1,0 +1,31 @@
+package com.prilepskiy.domain.pointUseCase
+
+import com.prilepskiy.data.repository.CategoryRepository
+import com.prilepskiy.data.repository.PointRepository
+import com.prilepskiy.domain.model.CategoryModel
+import com.prilepskiy.domain.model.PointModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
+import javax.inject.Inject
+import javax.inject.Singleton
+
+@Singleton
+class GetAllPointUseCase @Inject constructor(private val repository: PointRepository) {
+    operator fun invoke(): Flow<List<PointModel>> = repository.getAll().map { model ->
+        model.map {
+            PointModel(
+                pointId=it.pointId,
+                categoryId = it.categoryId,
+                uri = it.uri,
+                motivation=it.motivation,
+                reward=it.reward,
+                date=it.date,
+                isActive=it.isActive,
+                colActive=it.colActive,
+                colFinished=it.colFinished
+            )
+        }
+    }.flowOn(Dispatchers.IO)
+}
