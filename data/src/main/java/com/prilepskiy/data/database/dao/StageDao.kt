@@ -11,16 +11,16 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface StageDao {
     @Query("SELECT * FROM StageEntity")
-    suspend  fun getAllNote(): Flow<List<StageEntity>>
+    suspend  fun getAllStage(): List<StageEntity>
 
     @Query("SELECT * FROM NoteEntity WHERE pointId=:id")
-    suspend fun getStageFromPoint(id: Long): Flow<List<StageEntity>>
+    suspend fun getStageFromPoint(id: Long): List<StageEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(noteEntity: StageEntity)
 
     @Query("SELECT * FROM  NoteEntity WHERE pointId=:id")
-    suspend  fun getStageById(id: Long): Flow<StageEntity>
+    suspend  fun getStageById(id: Long): StageEntity
 
     @Query("DELETE FROM  NoteEntity WHERE pointId=:id")
     suspend fun deleteStage(id: Long)

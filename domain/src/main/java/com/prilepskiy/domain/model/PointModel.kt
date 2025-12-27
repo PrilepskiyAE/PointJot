@@ -1,13 +1,9 @@
-package com.prilepskiy.data.database.entity
+package com.prilepskiy.domain.model
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import com.prilepskiy.common.DEFAULT_LONG
 import com.prilepskiy.common.EMPTY_STRING
 
-@Entity
-data class PointEntity(
-    @PrimaryKey(autoGenerate = true)
+data class PointModel(
     val pointId: Long = DEFAULT_LONG,
     val categoryId: Long = DEFAULT_LONG,
     val uri: String = EMPTY_STRING,

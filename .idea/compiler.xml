@@ -2,8 +2,6 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
-      <module name="PointJot.data" target="21" />
-      <module name="PointJot.domain" target="21" />
       <module name="PointJot.presetation" target="21" />
     </bytecodeTargetLevel>
   </component>
