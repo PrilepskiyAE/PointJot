@@ -12,12 +12,18 @@ sealed class MainIntent : MviIntent {
     data class OnClickPoint(val pointId: Int) : MainIntent()
     data class OnError(val error: String?) : MainIntent()
     data class OnLoading(val isLoading: Boolean) : MainIntent()
+    data class OnClickCategory(val item: CategoryModel): MainIntent()
+    data class AddCategory(val item: CategoryModel): MainIntent()
+    data class DeleteCategory(val item: CategoryModel): MainIntent()
 }
 
 sealed class MainAction : MviAction {
     data class OnError(val error: String?) : MainAction()
     data class OnLoading(val isLoading: Boolean) : MainAction()
     data class GetCategory( val categoryList: List<CategoryModel>) : MainAction()
+    data class OnClickCategory(val item: CategoryModel) : MainAction()
+    data class AddCategory(val item: CategoryModel): MainAction()
+    data class DeleteCategory(val item: CategoryModel): MainAction()
 }
 
 data class MainState(

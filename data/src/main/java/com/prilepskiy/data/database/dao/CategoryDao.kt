@@ -14,6 +14,6 @@ interface CategoryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(noteEntity: CategoryEntity)
 
-    @Query("DELETE FROM  NoteEntity WHERE pointId=:id")
+    @Query("DELETE FROM  CategoryEntity WHERE categoryId=:id")
     suspend fun deleteCategory(id: Long)
 }

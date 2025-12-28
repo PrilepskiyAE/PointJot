@@ -12,10 +12,11 @@ import javax.inject.Singleton
 @Singleton
 class GetAllCategoryUseCase @Inject constructor(private val repository: CategoryRepository) {
     operator fun invoke(): Flow<List<CategoryModel>> = repository.getAllCategory().map { model ->
-        model.map {
+        model.mapIndexed { index,item ->
             CategoryModel(
-                categoryId = it.categoryId,
-                categoryName = it.categoryName
+                categoryId = item.categoryId,
+                categoryName = item.categoryName,
+                isActive=index==0
             )
         }
     }.flowOn(Dispatchers.IO)

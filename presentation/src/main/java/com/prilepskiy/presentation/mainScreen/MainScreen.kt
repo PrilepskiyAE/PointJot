@@ -12,6 +12,10 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -19,16 +23,20 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.prilepskiy.common.Blue100
 import com.prilepskiy.common.Blue500
 import com.prilepskiy.common.Blue600
+import com.prilepskiy.common.EMPTY_STRING
 import com.prilepskiy.common.Gray600
 import com.prilepskiy.common.Gray80
 import com.prilepskiy.common.Gray90
+import com.prilepskiy.common.ID_ALL_CATEGORY
 import com.prilepskiy.common.Spaces
 import com.prilepskiy.common.White
 import com.prilepskiy.domain.model.CategoryModel
 import com.prilepskiy.domain.model.PointModel
 import com.prilepskiy.presentation.R
 import com.prilepskiy.presentation.uiComponent.ChipsStandardTextComponent
+import com.prilepskiy.presentation.uiComponent.DeleteCategoryDialogComponent
 import com.prilepskiy.presentation.uiComponent.ErrorMessageComponent
+import com.prilepskiy.presentation.uiComponent.InputDialogComponent
 import com.prilepskiy.presentation.uiComponent.LoadingComponent
 import com.prilepskiy.presentation.uiComponent.TabsStandardComponents
 import com.prilepskiy.presentation.uiComponent.ToolbarStandardComponent
@@ -36,6 +44,7 @@ import com.prilepskiy.presentation.uiComponent.ToolbarStandardComponent
 @Composable
 fun MainScreen(goToPoint: (Int) -> Unit, viewModel: MainViewModel = hiltViewModel()) {
     val state = viewModel.viewState
+
 
     if (state.isLoading) {
         LoadingComponent()
@@ -47,10 +56,10 @@ fun MainScreen(goToPoint: (Int) -> Unit, viewModel: MainViewModel = hiltViewMode
             categoryList = state.categoryList,
             pointList = state.pointList,
             goToPoint = goToPoint,
-            onClickChip = {},
-            onClickLongChip = {},
+            onClickChip = { viewModel.onIntent(MainIntent.OnClickCategory(it)) },
+            onClickLongChip = { viewModel.onIntent(MainIntent.DeleteCategory(it)) },
             onClickTabLayout = {},
-            onClickAdd = {}
+            onClickAdd = { viewModel.onIntent(MainIntent.AddCategory(CategoryModel(categoryName = it))) }
         )
     }
 }
@@ -61,10 +70,38 @@ private fun MainScreen(
     pointList: List<PointModel>,
     onClickChip: (CategoryModel) -> Unit,
     onClickLongChip: (CategoryModel) -> Unit,
-    onClickAdd: () -> Unit,
+    onClickAdd: (String) -> Unit,
     onClickTabLayout: (id: Int) -> Unit,
     goToPoint: (Int) -> Unit
 ) {
+    var showDialogAddCategory by remember { mutableStateOf(false) }
+    var showDeleteDialog by remember { mutableStateOf(false) }
+    var deleteCategory: CategoryModel? by remember { mutableStateOf(null) }
+    if (showDialogAddCategory) {
+        InputDialogComponent(
+            onDismiss = { showDialogAddCategory = false },
+            onConfirm = { enteredText ->
+                onClickAdd.invoke(enteredText)
+                showDialogAddCategory = false
+            },
+            title = stringResource(R.string.dialog_category_title),
+            confirmText = stringResource(R.string.save),
+            placeholder = stringResource(R.string.dialog_category_placeholder)
+        )
+    }
+    if (showDeleteDialog) {
+        DeleteCategoryDialogComponent(
+            onDismiss = { showDeleteDialog = false },
+            onConfirm = {
+                deleteCategory?.let {
+                    onClickLongChip.invoke(it)
+                }
+
+                showDeleteDialog = false
+            },
+            categoryName = deleteCategory?.categoryName ?: EMPTY_STRING
+        )
+    }
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -87,46 +124,55 @@ private fun MainScreen(
                 colorBackgroundPassive = Gray90,
                 colorTextActive = Blue500,
                 colorTextPassive = Gray600,
-                onClickLongChip = onClickLongChip,
+                onClickLongChip = {
+                    if (it.categoryId != ID_ALL_CATEGORY) {
+                        deleteCategory = it
+                        showDeleteDialog = true
+                    }
+                },
                 onClickChip = onClickChip,
-                onClickAdd = onClickAdd
+                onClickAdd = {
+                    showDialogAddCategory = true
+                }
             )
             if (pointList.isEmpty()) {
-                    Box(modifier = Modifier.fillMaxSize()) {
-                        Text(
-                            modifier = Modifier.align(Alignment.Center),
-                            text = stringResource(R.string.empty_point),
-                            color = White
-                        )
-                    }
-
-            } else {LazyColumn {
-                item {
-                    TabsStandardComponents(
-                        tabs = listOf(
-                            stringResource(R.string.main_screen_active),
-                            stringResource(R.string.main_screen_closed)
-                        ), onClickTab = onClickTabLayout
+                Box(modifier = Modifier.fillMaxSize()) {
+                    Text(
+                        modifier = Modifier.align(Alignment.Center),
+                        text = stringResource(R.string.empty_point),
+                        color = White
                     )
                 }
-                if (pointList.isEmpty()) {
+
+            } else {
+                LazyColumn {
                     item {
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            Text(
-                                modifier = Modifier.align(Alignment.Center),
-                                text = stringResource(R.string.empty_point),
-                                color = White
-                            )
+                        TabsStandardComponents(
+                            tabs = listOf(
+                                stringResource(R.string.main_screen_active),
+                                stringResource(R.string.main_screen_closed)
+                            ), onClickTab = onClickTabLayout
+                        )
+                    }
+                    if (pointList.isEmpty()) {
+                        item {
+                            Box(modifier = Modifier.fillMaxSize()) {
+                                Text(
+                                    modifier = Modifier.align(Alignment.Center),
+                                    text = stringResource(R.string.empty_point),
+                                    color = White
+                                )
+                            }
+                        }
+                    } else {
+                        items(pointList.size) { index ->
+
                         }
                     }
-                } else {
-                    items(pointList.size) { index ->
 
-                    }
+
                 }
-
-
-            }}
+            }
 
         }
         FloatingActionButton(

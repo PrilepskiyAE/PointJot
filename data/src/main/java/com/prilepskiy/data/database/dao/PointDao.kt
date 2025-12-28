@@ -25,4 +25,7 @@ interface PointDao {
 
     @Query("DELETE FROM  PointEntity WHERE pointId=:id")
     suspend fun deletePoint(id: Long)
+
+    @Query("DELETE FROM  PointEntity WHERE categoryId=:id")
+    suspend fun deletePointByCategory(id: Long)
 }
