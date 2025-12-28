@@ -1,5 +1,6 @@
 package com.prilepskiy.data.repository
 
+import android.util.Log
 import com.prilepskiy.common.emitFlow
 import com.prilepskiy.data.database.dao.CategoryDao
 import com.prilepskiy.data.database.entity.CategoryEntity
@@ -11,18 +12,18 @@ import javax.inject.Singleton
 class CategoryRepository @Inject constructor(
     private val dao: CategoryDao,
 ) {
-
     fun getAllCategory(): Flow<List<CategoryEntity>> = emitFlow {
         dao.getAllCategory()
     }
 
 
-    fun insert(categoryEntity: CategoryEntity) = emitFlow {
+    suspend fun insert(categoryEntity: CategoryEntity) {
         dao.insert(categoryEntity)
     }
 
 
-    fun deleteCategory(id: Long) = emitFlow {
+    suspend fun deleteCategory(id: Long){
         dao.deleteCategory(id)
+
     }
 }

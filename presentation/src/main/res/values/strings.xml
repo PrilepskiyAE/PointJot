@@ -10,4 +10,13 @@
     <string name="main_screen_closed">Завершенные</string>
     <string name="empty_point">Нет целей</string>
     <string name="main_screen_btn_add">Добавить</string>
+    <string name="all">Все</string>
+    <string name="dialog_category_title">Введите название категории</string>
+    <string name="dialog_category_placeholder">название категории...</string>
+    <string name="save">Сохранить</string>
+    <string name="cansel">Отмена</string>
+    <string name="del">Удалить</string>
+    <string name="delete_category">Удаление категории</string>
+    <string name="dialiog_del_category_label1">Вы действительно хотите удалить категорию «%1$s»?</string>
+    <string name="dialiog_del_category_label2">Все цели данной категории будут удалены.</string>
 </resources>

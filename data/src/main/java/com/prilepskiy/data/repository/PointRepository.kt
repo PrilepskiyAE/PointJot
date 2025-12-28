@@ -38,4 +38,8 @@ class PointRepository @Inject constructor(
         dao.deletePoint(id)
     }
 
+    suspend fun deletePointByCategory(id: Long){
+        dao.deletePointByCategory(id)
+    }
+
 }
