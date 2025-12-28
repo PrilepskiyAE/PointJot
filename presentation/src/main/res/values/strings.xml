@@ -10,4 +10,5 @@
     <string name="main_screen_closed">Завершенные</string>
     <string name="empty_point">Нет целей</string>
     <string name="main_screen_btn_add">Добавить</string>
+    <string name="all">Все</string>
 </resources>

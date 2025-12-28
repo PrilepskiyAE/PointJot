@@ -30,6 +30,7 @@ fun ChipsStandardTextComponent(
     onClickAdd: (() -> Unit),
 ) {
     Row(modifier = modifier.horizontalScroll(rememberScrollState())) {
+
         list.forEachIndexed { index, item ->
             TextChip(
                 item = item,

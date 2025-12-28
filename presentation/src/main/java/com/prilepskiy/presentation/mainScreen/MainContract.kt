@@ -1,13 +1,15 @@
 package com.prilepskiy.presentation.mainScreen
 
+import androidx.compose.ui.res.stringResource
 import com.prilepskiy.common.MviAction
 import com.prilepskiy.common.MviIntent
 import com.prilepskiy.common.MviState
 import com.prilepskiy.domain.model.CategoryModel
 import com.prilepskiy.domain.model.PointModel
+import com.prilepskiy.presentation.R
 
 sealed class MainIntent : MviIntent {
-    data class OnClick(val pointId: Int) : MainIntent()
+    data class OnClickPoint(val pointId: Int) : MainIntent()
     data class OnError(val error: String?) : MainIntent()
     data class OnLoading(val isLoading: Boolean) : MainIntent()
 }
@@ -15,6 +17,7 @@ sealed class MainIntent : MviIntent {
 sealed class MainAction : MviAction {
     data class OnError(val error: String?) : MainAction()
     data class OnLoading(val isLoading: Boolean) : MainAction()
+    data class GetCategory( val categoryList: List<CategoryModel>) : MainAction()
 }
 
 data class MainState(

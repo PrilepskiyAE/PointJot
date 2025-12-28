@@ -11,6 +11,9 @@ import javax.inject.Singleton
 class CategoryRepository @Inject constructor(
     private val dao: CategoryDao,
 ) {
+    init {
+
+    }
 
     fun getAllCategory(): Flow<List<CategoryEntity>> = emitFlow {
         dao.getAllCategory()
