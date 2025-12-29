@@ -9,18 +9,13 @@ import com.prilepskiy.domain.categoryUseCase.AddCategoryUseCase
 import com.prilepskiy.domain.categoryUseCase.DeleteCategoryUseCase
 import com.prilepskiy.domain.categoryUseCase.GetAllCategoryUseCase
 import com.prilepskiy.domain.model.CategoryModel
-import com.prilepskiy.presentation.mainScreen.MainAction.AddCategory
-import com.prilepskiy.presentation.mainScreen.MainAction.DeleteCategory
-import com.prilepskiy.presentation.mainScreen.MainAction.OnClickCategory
-import com.prilepskiy.presentation.mainScreen.MainAction.OnError
-import com.prilepskiy.presentation.mainScreen.MainAction.OnLoading
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val mainReducer: MainReducer,
+    mainReducer: MainReducer,
     private val getAllCategoryUseCase: GetAllCategoryUseCase,
     private val deleteCategoryUseCase: DeleteCategoryUseCase,
     private val addCategoryUseCase: AddCategoryUseCase
@@ -44,18 +39,17 @@ class MainViewModel @Inject constructor(
 
     override fun handleIntent(intent: MainIntent) {
         when (intent) {
-            is MainIntent.OnError -> onAction(OnError(intent.error))
-            is MainIntent.OnLoading -> onAction(OnLoading(intent.isLoading))
+            is MainIntent.OnError -> onAction(MainAction.OnError(intent.error))
+            is MainIntent.OnLoading -> onAction(MainAction.OnLoading(intent.isLoading))
             is MainIntent.OnClickPoint -> {}
             is MainIntent.AddCategory -> {
                 getAllCategoryAction { list ->
                     if (list.find { it.categoryName == intent.item.categoryName } == null) {
                         addCategoryUseCase.invoke(intent.item)
-                        onAction(AddCategory(intent.item))
+                        onAction(MainAction.AddCategory(intent.item))
                     }
                 }
             }
-
             is MainIntent.DeleteCategory -> {
                 viewModelScope.launch {
                     if (intent.item != viewState.categoryList.firstOrNull() && !intent.item.isActive) {
@@ -63,14 +57,13 @@ class MainViewModel @Inject constructor(
                             val result = list.find { it.categoryName == intent.item.categoryName }
                             if (result != null) {
                                 deleteCategoryUseCase.invoke(result.categoryId)
-                                onAction(DeleteCategory(intent.item))
+                                onAction(MainAction.DeleteCategory(intent.item))
                             }
                         }
                     }
                 }
             }
-
-            is MainIntent.OnClickCategory -> onAction(OnClickCategory(intent.item))
+            is MainIntent.OnClickCategory -> onAction(MainAction.OnClickCategory(intent.item))
         }
     }
 

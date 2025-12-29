@@ -42,7 +42,7 @@ import com.prilepskiy.presentation.uiComponent.TabsStandardComponents
 import com.prilepskiy.presentation.uiComponent.ToolbarStandardComponent
 
 @Composable
-fun MainScreen(goToPoint: (Int) -> Unit, viewModel: MainViewModel = hiltViewModel()) {
+fun MainScreen(goToPoint: (Int) -> Unit,goToAddPoint: (Int) -> Unit, viewModel: MainViewModel = hiltViewModel()) {
     val state = viewModel.viewState
 
 
@@ -59,7 +59,8 @@ fun MainScreen(goToPoint: (Int) -> Unit, viewModel: MainViewModel = hiltViewMode
             onClickChip = { viewModel.onIntent(MainIntent.OnClickCategory(it)) },
             onClickLongChip = { viewModel.onIntent(MainIntent.DeleteCategory(it)) },
             onClickTabLayout = {},
-            onClickAdd = { viewModel.onIntent(MainIntent.AddCategory(CategoryModel(categoryName = it))) }
+            onClickAdd = { viewModel.onIntent(MainIntent.AddCategory(CategoryModel(categoryName = it))) },
+            goToAddPoint=goToAddPoint
         )
     }
 }
@@ -72,7 +73,8 @@ private fun MainScreen(
     onClickLongChip: (CategoryModel) -> Unit,
     onClickAdd: (String) -> Unit,
     onClickTabLayout: (id: Int) -> Unit,
-    goToPoint: (Int) -> Unit
+    goToPoint: (Int) -> Unit,
+    goToAddPoint: (Int) -> Unit,
 ) {
     var showDialogAddCategory by remember { mutableStateOf(false) }
     var showDeleteDialog by remember { mutableStateOf(false) }
@@ -177,7 +179,7 @@ private fun MainScreen(
         }
         FloatingActionButton(
             containerColor = Gray80,
-            onClick = { goToPoint.invoke(0) },
+            onClick = { goToAddPoint.invoke(0) },
             modifier = Modifier
                 .padding(vertical = Spaces.space60, horizontal = Spaces.space16)
                 .align(alignment = Alignment.BottomEnd)
