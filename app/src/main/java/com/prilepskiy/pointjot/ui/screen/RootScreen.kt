@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.prilepskiy.pointjot.navigation.mainNavigate
 import com.prilepskiy.pointjot.navigation.mainRoute
+import com.prilepskiy.pointjot.navigation.navigationToAddPoint
 import com.prilepskiy.pointjot.navigation.navigationToDetail
 
 @Composable
@@ -22,6 +23,7 @@ fun RootScreen(
     ) {
         mainNavigate(
             goToPoint = { pointId -> rootNavController.navigationToDetail(pointId) },
+            goToAddPoint = {pointId -> rootNavController.navigationToAddPoint(pointId)},
             popBack = { rootNavController.popBackStack() })
     }
 }
