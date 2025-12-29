@@ -9,6 +9,7 @@ import com.prilepskiy.domain.model.PointModel
 import com.prilepskiy.presentation.R
 
 sealed class MainIntent : MviIntent {
+    data object InitPoint : MainIntent()
     data class OnClickPoint(val pointId: Int) : MainIntent()
     data class OnError(val error: String?) : MainIntent()
     data class OnLoading(val isLoading: Boolean) : MainIntent()

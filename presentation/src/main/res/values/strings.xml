@@ -19,4 +19,5 @@
     <string name="delete_category">Удаление категории</string>
     <string name="dialiog_del_category_label1">Вы действительно хотите удалить категорию «%1$s»?</string>
     <string name="dialiog_del_category_label2">Все цели данной категории будут удалены.</string>
+    <string name="add_photo">Добавить фото</string>
 </resources>
