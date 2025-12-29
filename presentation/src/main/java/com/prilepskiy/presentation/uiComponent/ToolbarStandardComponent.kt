@@ -1,6 +1,7 @@
 package com.prilepskiy.presentation.uiComponent
 
 
+import android.graphics.drawable.Icon
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -15,6 +16,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -42,11 +46,11 @@ fun ToolbarStandardComponent(
     iconColor: Color = Gray700,
     textColor: Color = Black,
     onBackPressed: (() -> Unit)? = null,
-    @DrawableRes resFirstId: Int? = null,
+    firstIcon:   ImageVector? = null,
     onSecondClick: (() -> Unit)? = null,
-    @DrawableRes resSecondID: Int? = null,
+    secondIcon:   ImageVector? = null,
     onThirdClick: (() -> Unit)? = null,
-    @DrawableRes resThirdID: Int? = null,
+    thirdIcon: ImageVector? = null,
 ) {
 
     Column(
@@ -58,7 +62,7 @@ fun ToolbarStandardComponent(
         AppBar(
             modifier = modifier
         ) {
-            if (onBackPressed != null && resFirstId != null) {
+            if (onBackPressed != null && firstIcon != null) {
                 Row(
                     modifier = Modifier
                         .padding(top = Spaces.space8, bottom = Spaces.space8)
@@ -71,7 +75,7 @@ fun ToolbarStandardComponent(
                     horizontalArrangement = Arrangement.Center
                 ) {
                     Icon(
-                        painterResource(resFirstId),
+                        imageVector = firstIcon,
                         contentDescription = null,
                         tint = iconColor,
                         modifier = Modifier.size(Spaces.space24)
@@ -101,7 +105,7 @@ fun ToolbarStandardComponent(
                 }
             }
 
-            if (onSecondClick != null && resSecondID != null) {
+            if (onSecondClick != null && secondIcon != null) {
                 Row(
                     modifier = Modifier.fillMaxHeight(),
                     horizontalArrangement = Arrangement.End,
@@ -119,7 +123,7 @@ fun ToolbarStandardComponent(
                         horizontalArrangement = Arrangement.Center
                     ) {
                         Icon(
-                            painterResource(resSecondID),
+                            imageVector= secondIcon,
                             contentDescription = null,
                             tint = iconColor,
                             modifier = Modifier.size(Spaces.space24)
@@ -129,7 +133,7 @@ fun ToolbarStandardComponent(
                     Spacer(modifier = Modifier.width(Spaces.space12))
                 }
             }
-            if (onThirdClick != null && resThirdID != null) {
+            if (onThirdClick != null && thirdIcon != null) {
                 Row(
                     modifier = Modifier.fillMaxHeight(),
                     horizontalArrangement = Arrangement.End,
@@ -147,7 +151,7 @@ fun ToolbarStandardComponent(
                         horizontalArrangement = Arrangement.Center
                     ) {
                         Icon(
-                            painterResource(resThirdID),
+                            thirdIcon,
                             contentDescription = null,
                             tint = iconColor,
                             modifier = Modifier.size(Spaces.space24)
@@ -170,7 +174,7 @@ private inline fun AppBar(
         Row(
             Modifier
                 .fillMaxWidth()
-                .height(64.dp),
+                .height(Spaces.space64),
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically,
             content = content

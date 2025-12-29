@@ -1,5 +1,6 @@
 package com.prilepskiy.presentation.mainScreen
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.prilepskiy.common.ID_ALL_CATEGORY
 import com.prilepskiy.common.MviBaseViewModel
@@ -9,6 +10,7 @@ import com.prilepskiy.domain.categoryUseCase.AddCategoryUseCase
 import com.prilepskiy.domain.categoryUseCase.DeleteCategoryUseCase
 import com.prilepskiy.domain.categoryUseCase.GetAllCategoryUseCase
 import com.prilepskiy.domain.model.CategoryModel
+import com.prilepskiy.presentation.mainScreen.MainAction.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -25,28 +27,16 @@ class MainViewModel @Inject constructor(
 
     override fun initState(): MainState = MainState()
 
-    init {
-        getAllCategoryAction { list ->
-            if (list.isEmpty()) {
-                val first = CategoryModel(categoryId = ID_ALL_CATEGORY, "Все", isActive = true)
-                addCategoryUseCase.invoke(first)
-                onAction(MainAction.GetCategory(listOf(first)))
-            } else {
-                onAction(MainAction.GetCategory(list))
-            }
-        }
-    }
-
     override fun handleIntent(intent: MainIntent) {
         when (intent) {
-            is MainIntent.OnError -> onAction(MainAction.OnError(intent.error))
-            is MainIntent.OnLoading -> onAction(MainAction.OnLoading(intent.isLoading))
+            is MainIntent.OnError -> onAction(OnError(intent.error))
+            is MainIntent.OnLoading -> onAction(OnLoading(intent.isLoading))
             is MainIntent.OnClickPoint -> {}
             is MainIntent.AddCategory -> {
                 getAllCategoryAction { list ->
                     if (list.find { it.categoryName == intent.item.categoryName } == null) {
                         addCategoryUseCase.invoke(intent.item)
-                        onAction(MainAction.AddCategory(intent.item))
+                        onAction(AddCategory(intent.item))
                     }
                 }
             }
@@ -57,13 +47,24 @@ class MainViewModel @Inject constructor(
                             val result = list.find { it.categoryName == intent.item.categoryName }
                             if (result != null) {
                                 deleteCategoryUseCase.invoke(result.categoryId)
-                                onAction(MainAction.DeleteCategory(intent.item))
+                                onAction(DeleteCategory(intent.item))
                             }
                         }
                     }
                 }
             }
-            is MainIntent.OnClickCategory -> onAction(MainAction.OnClickCategory(intent.item))
+            is MainIntent.OnClickCategory -> onAction(OnClickCategory(intent.item))
+            MainIntent.InitPoint -> {
+                getAllCategoryAction { list ->
+                    if (list.isEmpty()) {
+                        val first = CategoryModel(categoryId = ID_ALL_CATEGORY, "Все", isActive = true)
+                        addCategoryUseCase.invoke(first)
+                        onAction(MainAction.GetCategory(listOf(first)))
+                    } else {
+                        onAction(MainAction.GetCategory(list))
+                    }
+                }
+            }
         }
     }
 

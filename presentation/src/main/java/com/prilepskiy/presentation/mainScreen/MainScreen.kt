@@ -12,6 +12,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -45,6 +46,9 @@ import com.prilepskiy.presentation.uiComponent.ToolbarStandardComponent
 fun MainScreen(goToPoint: (Int) -> Unit,goToAddPoint: (Int) -> Unit, viewModel: MainViewModel = hiltViewModel()) {
     val state = viewModel.viewState
 
+    LaunchedEffect(Unit) {
+        viewModel.onIntent(MainIntent.InitPoint)
+    }
 
     if (state.isLoading) {
         LoadingComponent()
