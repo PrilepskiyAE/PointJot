@@ -1,6 +1,9 @@
 package com.prilepskiy.presentation
 
+import android.content.Context
 import android.graphics.Rect
+import android.net.Uri
+import android.util.Log
 import android.view.ViewTreeObserver
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -23,6 +26,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import java.io.File
 
 
 fun Modifier.simpleClickable(enabled: Boolean = true, onClick: () -> Unit): Modifier = composed {

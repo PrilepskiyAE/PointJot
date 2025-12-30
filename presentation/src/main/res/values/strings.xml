@@ -20,4 +20,19 @@
     <string name="dialiog_del_category_label1">Вы действительно хотите удалить категорию «%1$s»?</string>
     <string name="dialiog_del_category_label2">Все цели данной категории будут удалены.</string>
     <string name="add_photo">Добавить фото</string>
+    <string name="permisshen_message">Разрешение на доступ к галерее не получено</string>
+    <string name="create_point">Создать цель</string>
+    <string name="update_point">Редоктировать цель</string>
+    <string name="date">Дата</string>
+    <string name="date_close">Дата завершения</string>
+    <string name="select_date">Выбрать дату</string>
+
+    <string name="ok">OK</string>
+    <string name="input1">Название</string>
+    <string name="input2">Мотивация</string>
+    <string name="input3">Награда</string>
+    <string name="input4">Категория</string>
+    <string name="label1">Конкретная и измеримая цель</string>
+    <string name="label2">Почему эта цель важна для Вас?</string>
+    <string name="label3">Как вы вознаградите себя</string>
 </resources>
