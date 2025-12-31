@@ -10,6 +10,7 @@ data class PointEntity(
     @PrimaryKey(autoGenerate = true)
     val pointId: Long = DEFAULT_LONG,
     val categoryId: Long = DEFAULT_LONG,
+    val pointName: String,
     val uri: String = EMPTY_STRING,
     val motivation: String = EMPTY_STRING,
     val reward: String = EMPTY_STRING,

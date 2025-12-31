@@ -1,5 +1,6 @@
 package com.prilepskiy.data.repository
 
+import android.util.Log
 import com.prilepskiy.common.emitFlow
 import com.prilepskiy.data.database.dao.PointDao
 import com.prilepskiy.data.database.entity.PointEntity
@@ -22,7 +23,7 @@ class PointRepository @Inject constructor(
     }
 
 
-    fun insertPoint(pointEntity: PointEntity) = emitFlow {
+    suspend fun insertPoint(pointEntity: PointEntity)  {
         dao.insert(pointEntity)
     }
 

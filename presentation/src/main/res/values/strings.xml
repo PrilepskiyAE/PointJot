@@ -11,6 +11,7 @@
     <string name="empty_point">Нет целей</string>
     <string name="main_screen_btn_add">Добавить</string>
     <string name="all">Все</string>
+    <string name="different">Разное</string>
     <string name="dialog_category_title">Введите название категории</string>
     <string name="dialog_category_placeholder">название категории...</string>
     <string name="save">Сохранить</string>

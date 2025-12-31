@@ -3,6 +3,7 @@ package com.prilepskiy.presentation.mainScreen
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.prilepskiy.common.ID_ALL_CATEGORY
+import com.prilepskiy.common.ID_SECOND_CATEGORY
 import com.prilepskiy.common.MviBaseViewModel
 import com.prilepskiy.common.Reducer
 import com.prilepskiy.common.subscribe
@@ -54,12 +55,14 @@ class MainViewModel @Inject constructor(
                 }
             }
             is MainIntent.OnClickCategory -> onAction(OnClickCategory(intent.item))
-            MainIntent.InitPoint -> {
+           is MainIntent.InitPoint -> {
                 getAllCategoryAction { list ->
                     if (list.isEmpty()) {
-                        val first = CategoryModel(categoryId = ID_ALL_CATEGORY, "Все", isActive = true)
+                        val first = CategoryModel(categoryId = ID_ALL_CATEGORY, intent.first, isActive = true)
+                        val second =  CategoryModel(categoryId = ID_SECOND_CATEGORY, intent.second, isActive = false)
                         addCategoryUseCase.invoke(first)
-                        onAction(MainAction.GetCategory(listOf(first)))
+                        addCategoryUseCase.invoke(second)
+                        onAction(MainAction.GetCategory(listOf(first,second)))
                     } else {
                         onAction(MainAction.GetCategory(list))
                     }
