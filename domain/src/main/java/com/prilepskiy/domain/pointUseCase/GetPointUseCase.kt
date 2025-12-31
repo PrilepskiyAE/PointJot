@@ -17,6 +17,7 @@ class GetPointUseCase@Inject constructor(private val repository: PointRepository
                 PointModel(
                     pointId=it.pointId,
                     categoryId = it.categoryId,
+                    pointName = it.pointName,
                     uri = it.uri,
                     motivation=it.motivation,
                     reward=it.reward,

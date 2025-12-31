@@ -12,30 +12,30 @@ import com.prilepskiy.presentation.mainScreen.MainScreen
 const val mainRoute = "main_route"
 const val detailRoute = "detail_route"
 const val addPointRoute = "add_point_route"
-fun NavGraphBuilder.mainNavigate(goToPoint: (Int) -> Unit,goToAddPoint: (Int) -> Unit, popBack: () -> Unit) {
+fun NavGraphBuilder.mainNavigate(goToPoint: (Long) -> Unit, goToAddPoint: (Long) -> Unit, popBack: () -> Unit) {
     composable(route = mainRoute) {
         MainScreen(goToPoint=goToPoint, goToAddPoint = goToAddPoint)
     }
     composable(
         route = "$detailRoute/{pointId}",
-        arguments = listOf(navArgument("pointId") { type = NavType.IntType })
+        arguments = listOf(navArgument("pointId") { type = NavType.LongType })
     ) { navBackStack ->
-        DetailScreen(navBackStack.arguments?.getInt("pointId") ?: 0) {
+        DetailScreen(navBackStack.arguments?.getLong("pointId")) {
             popBack.invoke()
         }
     }
     composable(
         route = "$addPointRoute/{pointId}",
-        arguments = listOf(navArgument("pointId") { type = NavType.IntType })
+        arguments = listOf(navArgument("pointId") { type = NavType.LongType })
     ) { navBackStack ->
-        AddPointScreen(point=navBackStack.arguments?.getInt("pointId") ?: 0, onPopBack={popBack.invoke()})
+        AddPointScreen(point=navBackStack.arguments?.getLong("pointId"), onPopBack={popBack.invoke()})
     }
 }
 
-fun NavController.navigationToDetail(pointId: Int) {
+fun NavController.navigationToDetail(pointId: Long) {
     this.navigate("$detailRoute/${pointId}")
 }
 
-fun NavController.navigationToAddPoint(pointId: Int) {
+fun NavController.navigationToAddPoint(pointId: Long) {
     this.navigate("$addPointRoute/${pointId}")
 }

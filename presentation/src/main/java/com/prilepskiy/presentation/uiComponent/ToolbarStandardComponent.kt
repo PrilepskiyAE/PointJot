@@ -31,6 +31,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.prilepskiy.common.Black
+import com.prilepskiy.common.EMPTY_STRING
 import com.prilepskiy.common.Gray700
 import com.prilepskiy.common.Spaces
 import com.prilepskiy.common.TitleTextStyles
@@ -41,7 +42,7 @@ import com.prilepskiy.presentation.simpleClickable
 @Composable
 fun ToolbarStandardComponent(
     modifier: Modifier = Modifier,
-    title: String = "",
+    title: String = EMPTY_STRING,
     transparentBackButton: Boolean = true,
     iconColor: Color = Gray700,
     textColor: Color = Black,
@@ -68,7 +69,7 @@ fun ToolbarStandardComponent(
                         .padding(top = Spaces.space8, bottom = Spaces.space8)
                         .size(Spaces.space32)
                         .simpleClickable(onClick = onBackPressed)
-                        .optional(Modifier.background(White, RoundedCornerShape(12.dp))) {
+                        .optional(Modifier.background(White, RoundedCornerShape(Spaces.space12))) {
                             !transparentBackButton
                         },
                     verticalAlignment = Alignment.CenterVertically,

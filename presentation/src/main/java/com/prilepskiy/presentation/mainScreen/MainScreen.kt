@@ -1,5 +1,6 @@
 package com.prilepskiy.presentation.mainScreen
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.prilepskiy.common.Blue100
@@ -29,6 +31,7 @@ import com.prilepskiy.common.Gray600
 import com.prilepskiy.common.Gray80
 import com.prilepskiy.common.Gray90
 import com.prilepskiy.common.ID_ALL_CATEGORY
+import com.prilepskiy.common.ID_SECOND_CATEGORY
 import com.prilepskiy.common.Spaces
 import com.prilepskiy.common.White
 import com.prilepskiy.domain.model.CategoryModel
@@ -43,11 +46,12 @@ import com.prilepskiy.presentation.uiComponent.TabsStandardComponents
 import com.prilepskiy.presentation.uiComponent.ToolbarStandardComponent
 
 @Composable
-fun MainScreen(goToPoint: (Int) -> Unit,goToAddPoint: (Int) -> Unit, viewModel: MainViewModel = hiltViewModel()) {
+fun MainScreen(goToPoint: (Long) -> Unit, goToAddPoint: (Long) -> Unit, viewModel: MainViewModel = hiltViewModel()) {
     val state = viewModel.viewState
-
+    val context:Context= LocalContext.current
     LaunchedEffect(Unit) {
-        viewModel.onIntent(MainIntent.InitPoint)
+        viewModel.onIntent(MainIntent.InitPoint(first = context.getString(R.string.all)
+        , second = context.getString(R.string.different)))
     }
 
     if (state.isLoading) {
@@ -77,8 +81,8 @@ private fun MainScreen(
     onClickLongChip: (CategoryModel) -> Unit,
     onClickAdd: (String) -> Unit,
     onClickTabLayout: (id: Int) -> Unit,
-    goToPoint: (Int) -> Unit,
-    goToAddPoint: (Int) -> Unit,
+    goToPoint: (Long) -> Unit,
+    goToAddPoint: (Long) -> Unit,
 ) {
     var showDialogAddCategory by remember { mutableStateOf(false) }
     var showDeleteDialog by remember { mutableStateOf(false) }
@@ -116,7 +120,7 @@ private fun MainScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(Spaces.space16)
+                .padding(vertical = Spaces.space16)
                 .align(alignment = Alignment.TopCenter)
         ) {
             ToolbarStandardComponent(
@@ -124,14 +128,14 @@ private fun MainScreen(
                 title = stringResource(R.string.main_screen_title), textColor = Gray80
             )
             ChipsStandardTextComponent(
-                modifier = Modifier.padding(Spaces.space16),
+               // modifier = Modifier.padding(Spaces.space16),
                 list = categoryList,
                 colorBackgroundActive = Blue100,
                 colorBackgroundPassive = Gray90,
                 colorTextActive = Blue500,
                 colorTextPassive = Gray600,
                 onClickLongChip = {
-                    if (it.categoryId != ID_ALL_CATEGORY) {
+                    if (it.categoryId != ID_ALL_CATEGORY && it.categoryId != ID_SECOND_CATEGORY) {
                         deleteCategory = it
                         showDeleteDialog = true
                     }

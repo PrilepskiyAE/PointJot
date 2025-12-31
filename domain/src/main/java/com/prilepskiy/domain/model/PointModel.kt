@@ -7,6 +7,7 @@ data class PointModel(
     val pointId: Long = DEFAULT_LONG,
     val categoryId: Long = DEFAULT_LONG,
     val uri: String = EMPTY_STRING,
+    val pointName: String = EMPTY_STRING,
     val motivation: String = EMPTY_STRING,
     val reward: String = EMPTY_STRING,
     val date: Long = DEFAULT_LONG,
