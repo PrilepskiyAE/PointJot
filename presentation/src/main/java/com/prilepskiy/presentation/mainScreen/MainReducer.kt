@@ -6,19 +6,21 @@ import javax.inject.Inject
 
 class MainReducer @Inject constructor() : Reducer<MainAction, MainState> {
     override fun reduce(action: MainAction, state: MainState): MainState = when (action) {
-        is MainAction.OnLoading-> state.copy(isLoading = action.isLoading)
+        is MainAction.OnLoading -> state.copy(isLoading = action.isLoading)
         is MainAction.OnError -> state.copy(error = action.error, isLoading = false)
         is MainAction.GetCategory -> state.copy(categoryList = action.categoryList)
         is MainAction.AddCategory -> {
-            val list=state.categoryList.toMutableList()
+            val list = state.categoryList.toMutableList()
             list.add(action.item)
-            state.copy(categoryList = list)
+            state.copy(categoryList = list, isLoading = false)
         }
+
         is MainAction.DeleteCategory -> {
-            val list=state.categoryList.toMutableList()
+            val list = state.categoryList.toMutableList()
             list.remove(action.item)
-            state.copy(categoryList = list)
+            state.copy(categoryList = list, isLoading = false)
         }
+
         is MainAction.OnClickCategory -> {
             val result = state.categoryList.map { item ->
                 if (item == action.item) {
@@ -29,5 +31,7 @@ class MainReducer @Inject constructor() : Reducer<MainAction, MainState> {
             }
             state.copy(categoryList = result)
         }
+
+        is MainAction.GetPoint -> state.copy(pointList = action.pointList,isLoading = false)
     }
 }

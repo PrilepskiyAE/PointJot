@@ -1,16 +1,25 @@
 package com.prilepskiy.presentation.mainScreen
 
 import android.content.Context
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -22,21 +31,28 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.prilepskiy.common.Blue100
 import com.prilepskiy.common.Blue500
 import com.prilepskiy.common.Blue600
 import com.prilepskiy.common.EMPTY_STRING
+import com.prilepskiy.common.Gray100
 import com.prilepskiy.common.Gray600
 import com.prilepskiy.common.Gray80
 import com.prilepskiy.common.Gray90
+import com.prilepskiy.common.Green100
+import com.prilepskiy.common.Green200
 import com.prilepskiy.common.ID_ALL_CATEGORY
 import com.prilepskiy.common.ID_SECOND_CATEGORY
+import com.prilepskiy.common.Sizes
 import com.prilepskiy.common.Spaces
 import com.prilepskiy.common.White
 import com.prilepskiy.domain.model.CategoryModel
 import com.prilepskiy.domain.model.PointModel
 import com.prilepskiy.presentation.R
+import com.prilepskiy.presentation.simpleClickable
 import com.prilepskiy.presentation.uiComponent.ChipsStandardTextComponent
 import com.prilepskiy.presentation.uiComponent.DeleteCategoryDialogComponent
 import com.prilepskiy.presentation.uiComponent.ErrorMessageComponent
@@ -51,7 +67,7 @@ fun MainScreen(goToPoint: (Long) -> Unit, goToAddPoint: (Long) -> Unit, viewMode
     val context:Context= LocalContext.current
     LaunchedEffect(Unit) {
         viewModel.onIntent(MainIntent.InitPoint(first = context.getString(R.string.all)
-        , second = context.getString(R.string.different)))
+        ,second = context.getString(R.string.different)))
     }
 
     if (state.isLoading) {
@@ -176,7 +192,7 @@ private fun MainScreen(
                         }
                     } else {
                         items(pointList.size) { index ->
-
+                            BeautifulCard(value=pointList[index],goToPoint=goToPoint)
                         }
                     }
 
@@ -196,4 +212,36 @@ private fun MainScreen(
         }
     }
 
+}
+
+@Composable
+fun BeautifulCard(value: PointModel, goToPoint: (Long) -> Unit,) {
+    Card(
+        shape = RoundedCornerShape(Spaces.space16),
+        modifier = Modifier.padding(Spaces.space16).fillMaxWidth().simpleClickable(){
+            goToPoint.invoke(value.pointId)
+        },
+        colors = CardDefaults.cardColors(containerColor=Green200),
+        border= BorderStroke(Spaces.space1,Green100)
+    ) {
+        Column(modifier =  Modifier.padding(Spaces.space16)) {
+            Text(
+                text = value.pointName,
+                color = Gray100,
+                modifier = Modifier.fillMaxWidth()
+                    .padding(bottom = Spaces.space8)
+            )
+            Surface(
+                color = Gray80,
+                shape = RoundedCornerShape(Spaces.space8),
+                modifier = Modifier.height(Spaces.space1)
+                .fillMaxWidth()
+            ) {}
+            Spacer(Modifier.height(Spaces.space8))
+            Text(
+                text = "Это красивая карточка с заголовком и описанием.",
+                lineHeight = Sizes.size24
+            )
+        }
+    }
 }

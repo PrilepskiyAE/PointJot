@@ -25,6 +25,7 @@ sealed class MainAction : MviAction {
     data class OnClickCategory(val item: CategoryModel) : MainAction()
     data class AddCategory(val item: CategoryModel): MainAction()
     data class DeleteCategory(val item: CategoryModel): MainAction()
+    data class GetPoint(val pointList: List<PointModel>): MainAction()
 }
 
 data class MainState(
