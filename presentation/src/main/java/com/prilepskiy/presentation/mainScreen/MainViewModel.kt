@@ -64,13 +64,15 @@ class MainViewModel @Inject constructor(
                 onAction(OnClickCategory(intent.item))
                 if (intent.item.categoryId == ID_ALL_CATEGORY) {
                     getAllPoint()
+                } else {
+                    getCategory.invoke(intent.item.categoryId)
+                        .subscribe(scope = viewModelScope, onStart = {
+                            onAction(MainAction.OnLoading(true))
+                        }, success = { list ->
+                            onAction(MainAction.GetPoint(list))
+                        }, error = { onAction(MainAction.OnError("Ой что-то пошло не так")) })
                 }
-                getCategory.invoke(intent.item.categoryId)
-                    .subscribe(scope = viewModelScope, onStart = {
-                        onAction(MainAction.OnLoading(true))
-                    }, success = { list ->
-                        onAction(MainAction.GetPoint(list))
-                    }, error = { onAction(MainAction.OnError("Ой что-то пошло не так")) })
+
             }
 
             is MainIntent.InitPoint -> {
