@@ -12,23 +12,37 @@ import com.prilepskiy.presentation.mainScreen.MainScreen
 const val mainRoute = "main_route"
 const val detailRoute = "detail_route"
 const val addPointRoute = "add_point_route"
-fun NavGraphBuilder.mainNavigate(goToPoint: (Long) -> Unit, goToAddPoint: (Long) -> Unit, popBack: () -> Unit) {
+const val pointIdArg = "pointId"
+
+fun NavGraphBuilder.mainNavigate(
+    goToPoint: (Long) -> Unit,
+    goToAddPoint: (Long) -> Unit,
+    popBack: () -> Unit
+) {
     composable(route = mainRoute) {
-        MainScreen(goToPoint=goToPoint, goToAddPoint = goToAddPoint)
+        MainScreen(goToPoint = goToPoint, goToAddPoint = goToAddPoint)
     }
     composable(
-        route = "$detailRoute/{pointId}",
-        arguments = listOf(navArgument("pointId") { type = NavType.LongType })
+        route = "$detailRoute/{$pointIdArg}",
+        arguments = listOf(navArgument(pointIdArg) { type = NavType.LongType })
     ) { navBackStack ->
-        DetailScreen(navBackStack.arguments?.getLong("pointId")) {
-            popBack.invoke()
-        }
+        DetailScreen(
+            navBackStack.arguments?.getLong(pointIdArg),
+            onPopBack = {
+                popBack.invoke()
+            }, onUpdatePoint = { point ->
+                point?.let {
+                    goToAddPoint(it)
+                }
+            })
     }
     composable(
-        route = "$addPointRoute/{pointId}",
-        arguments = listOf(navArgument("pointId") { type = NavType.LongType })
+        route = "$addPointRoute/{$pointIdArg}",
+        arguments = listOf(navArgument(pointIdArg) { type = NavType.LongType })
     ) { navBackStack ->
-        AddPointScreen(point=navBackStack.arguments?.getLong("pointId"), onPopBack={popBack.invoke()})
+        AddPointScreen(
+            point = navBackStack.arguments?.getLong(pointIdArg),
+            onPopBack = { popBack.invoke() })
     }
 }
 
