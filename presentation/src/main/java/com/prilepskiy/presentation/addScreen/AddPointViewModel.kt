@@ -82,7 +82,7 @@ class AddPointViewModel @Inject constructor(
                             list.firstOrNull()?.let { item ->
                                 addPointUseCase.invoke(
                                     PointModel(
-                                        pointId = intent.id.toLong(),
+                                        pointId = intent.id,
                                         categoryId = viewState.selectedCategory?.categoryId
                                             ?: ID_SECOND_CATEGORY,
                                         uri = viewState.selectedImageUri ?: EMPTY_STRING,

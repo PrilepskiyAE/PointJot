@@ -32,6 +32,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
 import coil3.compose.AsyncImage
 import coil3.request.CachePolicy
 import coil3.request.ImageRequest
@@ -82,12 +83,13 @@ fun EmptyPhotoCardComponent(modifier: Modifier = Modifier, onClick: () -> Unit) 
 fun PhotoCardComponent(
     modifier: Modifier = Modifier,
     path: String,
+    size: Dp =Spaces.space300,
     onClick: () -> Unit,
 ) {
     var isLoading by remember { mutableStateOf(true) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
 
-    Box(modifier = modifier.size(Spaces.space300)) {
+    Box(modifier = modifier.size(size)) {
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
                 .data(path)

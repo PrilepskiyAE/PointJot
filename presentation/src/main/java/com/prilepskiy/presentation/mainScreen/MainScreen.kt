@@ -58,21 +58,28 @@ import com.prilepskiy.presentation.uiComponent.DeleteCategoryDialogComponent
 import com.prilepskiy.presentation.uiComponent.ErrorMessageComponent
 import com.prilepskiy.presentation.uiComponent.InputDialogComponent
 import com.prilepskiy.presentation.uiComponent.LoadingComponent
+import com.prilepskiy.presentation.uiComponent.PointCardComponent
 import com.prilepskiy.presentation.uiComponent.TabsStandardComponents
 import com.prilepskiy.presentation.uiComponent.ToolbarStandardComponent
 
 @Composable
-fun MainScreen(goToPoint: (Long) -> Unit, goToAddPoint: (Long) -> Unit, viewModel: MainViewModel = hiltViewModel()) {
+fun MainScreen(
+    goToPoint: (Long) -> Unit,
+    goToAddPoint: (Long) -> Unit,
+    viewModel: MainViewModel = hiltViewModel()
+) {
     val state = viewModel.viewState
-    val context:Context= LocalContext.current
+    val context: Context = LocalContext.current
     LaunchedEffect(Unit) {
-        viewModel.onIntent(MainIntent.InitPoint(first = context.getString(R.string.all)
-        ,second = context.getString(R.string.different)))
+        viewModel.onIntent(
+            MainIntent.InitPoint(
+                first = context.getString(R.string.all),
+                second = context.getString(R.string.different)
+            )
+        )
     }
 
-    if (state.isLoading) {
-        LoadingComponent()
-    } else if (!state.error.isNullOrEmpty()) {
+    if (!state.error.isNullOrEmpty()) {
         ErrorMessageComponent(textError = state.error) {
         }
     } else {
@@ -84,7 +91,7 @@ fun MainScreen(goToPoint: (Long) -> Unit, goToAddPoint: (Long) -> Unit, viewMode
             onClickLongChip = { viewModel.onIntent(MainIntent.DeleteCategory(it)) },
             onClickTabLayout = {},
             onClickAdd = { viewModel.onIntent(MainIntent.AddCategory(CategoryModel(categoryName = it))) },
-            goToAddPoint=goToAddPoint
+            goToAddPoint = goToAddPoint
         )
     }
 }
@@ -144,7 +151,7 @@ private fun MainScreen(
                 title = stringResource(R.string.main_screen_title), textColor = Gray80
             )
             ChipsStandardTextComponent(
-               // modifier = Modifier.padding(Spaces.space16),
+                // modifier = Modifier.padding(Spaces.space16),
                 list = categoryList,
                 colorBackgroundActive = Blue100,
                 colorBackgroundPassive = Gray90,
@@ -192,14 +199,13 @@ private fun MainScreen(
                         }
                     } else {
                         items(pointList.size) { index ->
-                            BeautifulCard(value=pointList[index],goToPoint=goToPoint)
+                            PointCardComponent(value = pointList[index], goToPoint = goToPoint)
                         }
                     }
 
 
                 }
             }
-
         }
         FloatingActionButton(
             containerColor = Gray80,
@@ -212,36 +218,4 @@ private fun MainScreen(
         }
     }
 
-}
-
-@Composable
-fun BeautifulCard(value: PointModel, goToPoint: (Long) -> Unit,) {
-    Card(
-        shape = RoundedCornerShape(Spaces.space16),
-        modifier = Modifier.padding(Spaces.space16).fillMaxWidth().simpleClickable(){
-            goToPoint.invoke(value.pointId)
-        },
-        colors = CardDefaults.cardColors(containerColor=Green200),
-        border= BorderStroke(Spaces.space1,Green100)
-    ) {
-        Column(modifier =  Modifier.padding(Spaces.space16)) {
-            Text(
-                text = value.pointName,
-                color = Gray100,
-                modifier = Modifier.fillMaxWidth()
-                    .padding(bottom = Spaces.space8)
-            )
-            Surface(
-                color = Gray80,
-                shape = RoundedCornerShape(Spaces.space8),
-                modifier = Modifier.height(Spaces.space1)
-                .fillMaxWidth()
-            ) {}
-            Spacer(Modifier.height(Spaces.space8))
-            Text(
-                text = "Это красивая карточка с заголовком и описанием.",
-                lineHeight = Sizes.size24
-            )
-        }
-    }
 }
