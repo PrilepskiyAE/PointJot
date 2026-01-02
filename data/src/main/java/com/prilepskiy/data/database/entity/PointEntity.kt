@@ -16,6 +16,6 @@ data class PointEntity(
     val reward: String = EMPTY_STRING,
     val date: Long = DEFAULT_LONG,
     val isActive: Boolean = true,
-    val colActive: Long = DEFAULT_LONG,
+    val fullNote: Long = DEFAULT_LONG,
     val colFinished: Long = DEFAULT_LONG,
 )

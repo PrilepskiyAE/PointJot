@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -78,8 +79,9 @@ fun MainScreen(
             )
         )
     }
-
-    if (!state.error.isNullOrEmpty()) {
+    if (state.isLoading) {
+        LoadingComponent()
+    } else if (!state.error.isNullOrEmpty()) {
         ErrorMessageComponent(textError = state.error) {
         }
     } else {
@@ -89,7 +91,7 @@ fun MainScreen(
             goToPoint = goToPoint,
             onClickChip = { viewModel.onIntent(MainIntent.OnClickCategory(it)) },
             onClickLongChip = { viewModel.onIntent(MainIntent.DeleteCategory(it)) },
-            onClickTabLayout = {},
+            onClickTabLayout = { viewModel.onIntent(MainIntent.OnClickTab(it)) },
             onClickAdd = { viewModel.onIntent(MainIntent.AddCategory(CategoryModel(categoryName = it))) },
             goToAddPoint = goToAddPoint
         )
@@ -168,6 +170,12 @@ private fun MainScreen(
                     showDialogAddCategory = true
                 }
             )
+            TabsStandardComponents(
+                tabs = listOf(
+                    stringResource(R.string.main_screen_active),
+                    stringResource(R.string.main_screen_closed)
+                ), onClickTab = onClickTabLayout
+            )
             if (pointList.isEmpty()) {
                 Box(modifier = Modifier.fillMaxSize()) {
                     Text(
@@ -179,14 +187,7 @@ private fun MainScreen(
 
             } else {
                 LazyColumn {
-                    item {
-                        TabsStandardComponents(
-                            tabs = listOf(
-                                stringResource(R.string.main_screen_active),
-                                stringResource(R.string.main_screen_closed)
-                            ), onClickTab = onClickTabLayout
-                        )
-                    }
+
                     if (pointList.isEmpty()) {
                         item {
                             Box(modifier = Modifier.fillMaxSize()) {
@@ -201,6 +202,7 @@ private fun MainScreen(
                         items(pointList.size) { index ->
                             PointCardComponent(value = pointList[index], goToPoint = goToPoint)
                         }
+                        item { Box(modifier = Modifier.size(Spaces.space100)) }
                     }
 
 

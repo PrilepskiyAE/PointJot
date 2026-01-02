@@ -23,7 +23,7 @@
     <string name="add_photo">Добавить фото</string>
     <string name="permisshen_message">Разрешение на доступ к галерее не получено</string>
     <string name="create_point">Создать цель</string>
-    <string name="update_point">Редоктировать цель</string>
+    <string name="update_point">Редактировать цель</string>
     <string name="date">Дата</string>
     <string name="date_close">Дата завершения</string>
     <string name="select_date">Выбрать дату</string>
@@ -36,6 +36,9 @@
     <string name="label1">Конкретная и измеримая цель</string>
     <string name="label2">Почему эта цель важна для Вас?</string>
     <string name="label3">Как вы вознаградите себя</string>
-    <string name="progress">Выполнено: %1$s%</string>
+    <string name="task_is_overdue">Задача просрочена</string>
+    <string name="days_left">Осталось дней %1$d</string>
+    <string name="progress">Выполнено: %1$d %</string>
+    <string name="del_point">Удалить задачу</string>
 
 </resources>

@@ -69,7 +69,7 @@ class AddPointViewModel @Inject constructor(
                                 reward = viewState.reward,
                                 date = viewState.date,
                                 isActive = true,
-                                colActive = 0,
+                                fullNote = 0,
                                 colFinished = 0
                             )
                         )
@@ -91,7 +91,7 @@ class AddPointViewModel @Inject constructor(
                                         reward = viewState.reward,
                                         date = viewState.date,
                                         isActive = item.isActive,
-                                        colActive = item.colActive,
+                                        fullNote = item.fullNote,
                                         colFinished = item.colFinished
                                     )
                                 )
