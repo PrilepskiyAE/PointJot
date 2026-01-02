@@ -22,7 +22,7 @@ class GetCategoryUseCase @Inject constructor(private val repository: PointReposi
                 reward=it.reward,
                 date=it.date,
                 isActive=it.isActive,
-                colActive=it.colActive,
+                fullNote=it.fullNote,
                 colFinished=it.colFinished
             )
         }

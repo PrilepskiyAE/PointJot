@@ -1,7 +1,7 @@
 package com.prilepskiy.presentation.mainScreen
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.prilepskiy.common.DEFAULT_INT
 import com.prilepskiy.common.ID_ALL_CATEGORY
 import com.prilepskiy.common.ID_SECOND_CATEGORY
 import com.prilepskiy.common.MviBaseViewModel
@@ -45,7 +45,6 @@ class MainViewModel @Inject constructor(
                     }
                 }
             }
-
             is MainIntent.DeleteCategory -> {
                 viewModelScope.launch {
                     if (intent.item != viewState.categoryList.firstOrNull() && !intent.item.isActive) {
@@ -59,22 +58,14 @@ class MainViewModel @Inject constructor(
                     }
                 }
             }
-
             is MainIntent.OnClickCategory -> {
                 onAction(OnClickCategory(intent.item))
                 if (intent.item.categoryId == ID_ALL_CATEGORY) {
-                    getAllPoint()
+                    getAllPoint(false)
                 } else {
-                    getCategory.invoke(intent.item.categoryId)
-                        .subscribe(scope = viewModelScope, onStart = {
-                            onAction(MainAction.OnLoading(true))
-                        }, success = { list ->
-                            onAction(MainAction.GetPoint(list))
-                        }, error = { onAction(MainAction.OnError("Ой что-то пошло не так")) })
+                    getPointByCategory(intent.item.categoryId)
                 }
-
             }
-
             is MainIntent.InitPoint -> {
                 getAllCategoryAction { list ->
                     if (list.isEmpty()) {
@@ -90,24 +81,40 @@ class MainViewModel @Inject constructor(
                         )
                         addCategoryUseCase.invoke(first)
                         addCategoryUseCase.invoke(second)
-                        onAction(MainAction.GetCategory(listOf(first, second)))
+                        onAction(GetCategory(listOf(first, second)))
                     } else {
-                        onAction(MainAction.GetCategory(list))
+                        onAction(GetCategory(list))
                     }
-                    getAllPoint()
+                    getAllPoint(true)
                 }
+            }
+            is MainIntent.OnClickTab -> {
+                onAction(OnClickTab(intent.id == DEFAULT_INT))
+                if (viewState.activeCategoryId == ID_ALL_CATEGORY) {
+                    getAllPoint(false)
+                } else {
+                    getPointByCategory(viewState.activeCategoryId)
+                }
+
             }
         }
     }
 
-    fun getAllPoint() {
+    fun getPointByCategory(categoryId: Long) {
+        getCategory.invoke(categoryId)
+            .subscribe(scope = viewModelScope, success = { list ->
+                onAction(GetPoint(list.filter { viewState.isActive == it.isActive }))
+            }, error = { onAction(OnError("Ой что-то пошло не так")) })
+    }
+
+    fun getAllPoint(showLoading: Boolean) {
         getAllPointUseCase.invoke().subscribe(
             scope = viewModelScope,
             onStart = {
-                onAction(MainAction.OnLoading(true))
+                onAction(MainAction.OnLoading(showLoading))
             },
-            success = {
-                onAction(MainAction.GetPoint(it))
+            success = { pointList ->
+                onAction(MainAction.GetPoint(pointList.filter { viewState.isActive == it.isActive }))
             },
             error = { onAction(MainAction.OnError("Ой что-то пошло не так")) })
     }

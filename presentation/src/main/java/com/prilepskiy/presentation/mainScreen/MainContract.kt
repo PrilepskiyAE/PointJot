@@ -1,6 +1,7 @@
 package com.prilepskiy.presentation.mainScreen
 
 import androidx.compose.ui.res.stringResource
+import com.prilepskiy.common.ID_ALL_CATEGORY
 import com.prilepskiy.common.MviAction
 import com.prilepskiy.common.MviIntent
 import com.prilepskiy.common.MviState
@@ -16,6 +17,7 @@ sealed class MainIntent : MviIntent {
     data class OnClickCategory(val item: CategoryModel): MainIntent()
     data class AddCategory(val item: CategoryModel): MainIntent()
     data class DeleteCategory(val item: CategoryModel): MainIntent()
+    data class OnClickTab(val id: Int): MainIntent()
 }
 
 sealed class MainAction : MviAction {
@@ -26,11 +28,14 @@ sealed class MainAction : MviAction {
     data class AddCategory(val item: CategoryModel): MainAction()
     data class DeleteCategory(val item: CategoryModel): MainAction()
     data class GetPoint(val pointList: List<PointModel>): MainAction()
+    data class OnClickTab(val isActive: Boolean ): MainAction()
 }
 
 data class MainState(
     val categoryList: List<CategoryModel> = listOf(),
+    val activeCategoryId: Long = ID_ALL_CATEGORY,
     val pointList: List<PointModel> = listOf(),
+    val isActive: Boolean=true,
     override val error: String? = null,
     override val isLoading: Boolean = false,
 ) : MviState

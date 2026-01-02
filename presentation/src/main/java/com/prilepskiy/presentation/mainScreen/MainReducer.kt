@@ -1,5 +1,6 @@
 package com.prilepskiy.presentation.mainScreen
 
+import com.prilepskiy.common.DEFAULT_INT
 import com.prilepskiy.common.Reducer
 import com.prilepskiy.domain.model.CategoryModel
 import javax.inject.Inject
@@ -29,9 +30,12 @@ class MainReducer @Inject constructor() : Reducer<MainAction, MainState> {
                     item.copy(isActive = false)
                 }
             }
-            state.copy(categoryList = result)
+            state.copy(categoryList = result, activeCategoryId = action.item.categoryId)
         }
 
-        is MainAction.GetPoint -> state.copy(pointList = action.pointList,isLoading = false)
+        is MainAction.GetPoint -> state.copy(pointList = action.pointList, isLoading = false)
+        is MainAction.OnClickTab -> {
+            state.copy(isActive = action.isActive,)
+        }
     }
 }

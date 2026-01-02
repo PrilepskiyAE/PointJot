@@ -5,7 +5,6 @@ import com.prilepskiy.data.database.entity.PointEntity
 import com.prilepskiy.data.repository.PointRepository
 import com.prilepskiy.domain.model.PointModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -26,7 +25,7 @@ class AddPointUseCase @Inject constructor(private val repository: PointRepositor
                     reward = pointModel.reward,
                     date = pointModel.date,
                     isActive = pointModel.isActive,
-                    colActive = pointModel.colActive,
+                    fullNote = pointModel.fullNote,
                     colFinished = pointModel.colFinished
                 )
             )

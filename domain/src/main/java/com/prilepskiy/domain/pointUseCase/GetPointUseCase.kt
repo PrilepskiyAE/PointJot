@@ -1,9 +1,7 @@
 package com.prilepskiy.domain.pointUseCase
 
 import com.prilepskiy.data.repository.PointRepository
-import com.prilepskiy.data.repository.StageRepository
 import com.prilepskiy.domain.model.PointModel
-import com.prilepskiy.domain.model.StageModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
@@ -23,7 +21,7 @@ class GetPointUseCase@Inject constructor(private val repository: PointRepository
                     reward=it.reward,
                     date=it.date,
                     isActive=it.isActive,
-                    colActive=it.colActive,
+                    fullNote=it.fullNote,
                     colFinished=it.colFinished
                 )
             }
