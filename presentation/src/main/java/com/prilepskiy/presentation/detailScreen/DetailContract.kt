@@ -1,6 +1,5 @@
 package com.prilepskiy.presentation.detailScreen
 
-import com.prilepskiy.common.ID_ALL_CATEGORY
 import com.prilepskiy.common.MviAction
 import com.prilepskiy.common.MviIntent
 import com.prilepskiy.common.MviState
@@ -11,13 +10,16 @@ import com.prilepskiy.domain.model.StageModel
 
 
 sealed class DetailIntent : MviIntent {
-    data class Init(val first: String,val second: String) : DetailIntent()
+    data class Init(val pointId: Long) : DetailIntent()
+    data class OnClickSuccess(val onSuccess:()-> Unit) : DetailIntent()
+    data class OnClickDelete(val onDelete:()-> Unit) : DetailIntent()
     data class OnError(val error: String?) : DetailIntent()
     data class OnLoading(val isLoading: Boolean) : DetailIntent()
 }
 
 sealed class DetailAction : MviAction {
-    data class Init(val first: String,val second: String) : DetailAction()
+    data class Init(val point: PointModel) : DetailAction()
+    data class GetCategory(val category: List<CategoryModel>) : DetailAction()
     data class OnError(val error: String?) : DetailAction()
     data class OnLoading(val isLoading: Boolean) : DetailAction()
 

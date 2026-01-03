@@ -22,6 +22,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -32,40 +33,67 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.prilepskiy.common.Black
 import com.prilepskiy.common.Blue600
+import com.prilepskiy.common.BodyTextStyles
 import com.prilepskiy.common.DEFAULT_INT
 import com.prilepskiy.common.EMPTY_STRING
 import com.prilepskiy.common.Gray100
+import com.prilepskiy.common.Gray200
 import com.prilepskiy.common.Gray80
 import com.prilepskiy.common.Gray90
+import com.prilepskiy.common.ID_ALL_CATEGORY
+import com.prilepskiy.common.LabelTextStyles
 import com.prilepskiy.common.Sizes
 import com.prilepskiy.common.Spaces
 import com.prilepskiy.common.TAB_DETAIL
 import com.prilepskiy.common.TAB_NOTE
 import com.prilepskiy.common.TAB_STAGE
+import com.prilepskiy.common.TitleTextStyles
+import com.prilepskiy.domain.model.CategoryModel
+import com.prilepskiy.domain.model.PointModel
 import com.prilepskiy.presentation.R
-import com.prilepskiy.presentation.mainScreen.MainViewModel
 import com.prilepskiy.presentation.uiComponent.PhotoCardComponent
 import com.prilepskiy.presentation.uiComponent.TabsStandardComponents
 import com.prilepskiy.presentation.uiComponent.ToolbarStandardComponent
 
 @Composable
-fun DetailScreen(point: Long?, onPopBack: () -> Unit, onUpdatePoint: (Long?) -> Unit,viewModel: DetailViewModel = hiltViewModel()) {
-    DetailScreen(
-        pointId = point,
-        selectedImageUri = null,
-        onPopBack = onPopBack,
-        onUpdatePoint = onUpdatePoint,
-        onSuccessPoint = {},
-        onDeletePoint = {},
-        addNote = {},
-        addStage = {}
-    )
+fun DetailScreen(
+    point: Long?,
+    onPopBack: () -> Unit,
+    onUpdatePoint: (Long?) -> Unit,
+    viewModel: DetailViewModel = hiltViewModel()
+) {
+    val state = viewModel.viewState
+
+    LaunchedEffect(point) {
+        point?.let {
+            viewModel.onIntent(DetailIntent.Init(it))
+        }
+    }
+
+    state.point?.let { pt ->
+        DetailScreen(
+            point = pt,
+            category = state.categoryList.find {
+                it.categoryId == pt.categoryId
+            } ?: CategoryModel(
+                categoryId = ID_ALL_CATEGORY,
+                categoryName = stringResource(R.string.all)
+            ),
+            onPopBack = onPopBack,
+            onUpdatePoint = onUpdatePoint,
+            onSuccessPoint = { viewModel.onIntent(DetailIntent.OnClickSuccess { onPopBack.invoke() }) },
+            onDeletePoint = { viewModel.onIntent(DetailIntent.OnClickDelete { onPopBack.invoke() }) },
+            addNote = {},
+            addStage = {}
+        )
+    }
+
 }
 
 @Composable
 fun DetailScreen(
-    pointId: Long?,
-    selectedImageUri: String?,
+    point: PointModel,
+    category: CategoryModel,
     onPopBack: () -> Unit,
     onUpdatePoint: (Long?) -> Unit,
     onSuccessPoint: () -> Unit,
@@ -111,18 +139,15 @@ fun DetailScreen(
             when (tabId) {
                 TAB_DETAIL -> {
                     DetailTabScreen(
-                        pointId = pointId,
-                        selectedImageUri = selectedImageUri,
-                        onPopBack = onPopBack,
+                        point = point,
                         onUpdatePoint = onUpdatePoint,
-                        onSuccessPoint = onSuccessPoint
+                        category = category
                     )
                 }
 
                 TAB_STAGE -> {
                     StageTabScreen(
-                        pointId = pointId,
-                        selectedImageUri = selectedImageUri,
+                        point = point,
                         onPopBack = onPopBack,
                         onUpdatePoint = onUpdatePoint,
                         onSuccessPoint = onSuccessPoint
@@ -131,8 +156,7 @@ fun DetailScreen(
 
                 TAB_NOTE -> {
                     NoteTabScreen(
-                        pointId = pointId,
-                        selectedImageUri = selectedImageUri,
+                        point = point,
                         onPopBack = onPopBack,
                         onUpdatePoint = onUpdatePoint,
                         onSuccessPoint = onSuccessPoint
@@ -141,11 +165,9 @@ fun DetailScreen(
 
                 else -> {
                     DetailTabScreen(
-                        pointId = pointId,
-                        selectedImageUri = selectedImageUri,
-                        onPopBack = onPopBack,
+                        point = point,
                         onUpdatePoint = onUpdatePoint,
-                        onSuccessPoint = onSuccessPoint
+                        category = category
                     )
                 }
             }
@@ -172,11 +194,9 @@ fun DetailScreen(
 
 @Composable
 fun DetailTabScreen(
-    pointId: Long?,
-    selectedImageUri: String?,
-    onPopBack: () -> Unit,
+    point: PointModel,
+    category: CategoryModel,
     onUpdatePoint: (Long?) -> Unit,
-    onSuccessPoint: () -> Unit
 ) {
     val scrollState = rememberScrollState()
     Column(
@@ -185,10 +205,10 @@ fun DetailTabScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     )
     {
-        if (selectedImageUri != null) {
+        if (point.uri.isNotEmpty()) {
             PhotoCardComponent(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
-                path = selectedImageUri
+                path = point.uri
             ) {}
         } else {
             Box(
@@ -198,12 +218,76 @@ fun DetailTabScreen(
             )
         }
         Text(
-            modifier = Modifier.clickable(onClick = { onPopBack.invoke() }),
-            text = "DetailScreen $pointId"
+            modifier = Modifier
+                .padding(Spaces.space8)
+                .align(alignment = Alignment.Start),
+            text = "Наименование:",
+            style = TitleTextStyles.H4W700,
+            color = Gray90
+        )
+        Text(
+            modifier = Modifier
+                .padding(Spaces.space8)
+                .align(alignment = Alignment.Start),
+            text = point.pointName,
+            style = BodyTextStyles.Large,
+            color = Gray200
+        )
+
+        Text(
+            modifier = Modifier
+                .padding(Spaces.space8)
+                .align(alignment = Alignment.Start),
+            text = "Мотивация:",
+            style = TitleTextStyles.H4W700,
+            color = Gray90
+        )
+        Text(
+            modifier = Modifier
+                .padding(Spaces.space8)
+                .align(alignment = Alignment.Start),
+            text = point.motivation,
+            style = BodyTextStyles.Large,
+            color = Gray200
+        )
+
+        Text(
+            modifier = Modifier
+                .padding(Spaces.space8)
+                .align(alignment = Alignment.Start),
+            text = "Награда:",
+            style = TitleTextStyles.H4W700,
+            color = Gray90
+        )
+        Text(
+            modifier = Modifier
+                .padding(Spaces.space8)
+                .align(alignment = Alignment.Start),
+            text = point.reward,
+            style = BodyTextStyles.Large,
+            color = Gray200
+        )
+        Text(
+            modifier = Modifier
+                .padding(Spaces.space8)
+                .align(alignment = Alignment.Start),
+            text = "Категория:",
+            style = TitleTextStyles.H4W700,
+            color = Gray90
+        )
+        Text(
+            modifier = Modifier
+                .padding(Spaces.space8)
+                .align(alignment = Alignment.Start),
+            text = category.categoryName,
+            style = BodyTextStyles.Large,
+            color = Gray200
         )
         Button(
-            modifier = Modifier.fillMaxWidth().padding(Spaces.space16),
-            onClick = { onUpdatePoint.invoke(pointId) },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(Spaces.space16),
+            onClick = { onUpdatePoint.invoke(point.pointId) },
             colors = ButtonDefaults.buttonColors(containerColor = Gray90, contentColor = Black),
             contentPadding = PaddingValues(horizontal = Spaces.space16, vertical = Spaces.space9)
         ) {
@@ -213,14 +297,13 @@ fun DetailTabScreen(
                 fontSize = Sizes.size18
             )
         }
-
+        Box(modifier = Modifier.size(Spaces.space30))
     }
 }
 
 @Composable
 fun NoteTabScreen(
-    pointId: Long?,
-    selectedImageUri: String?,
+    point: PointModel,
     onPopBack: () -> Unit,
     onUpdatePoint: (Long?) -> Unit,
     onSuccessPoint: () -> Unit
@@ -237,8 +320,7 @@ fun NoteTabScreen(
 
 @Composable
 fun StageTabScreen(
-    pointId: Long?,
-    selectedImageUri: String?,
+    point: PointModel,
     onPopBack: () -> Unit,
     onUpdatePoint: (Long?) -> Unit,
     onSuccessPoint: () -> Unit

@@ -18,7 +18,7 @@ sealed class AddPointIntent : MviIntent {
     data class ChangeDate(val value: Long) : AddPointIntent()
     data class ChangeReward(val value: String) : AddPointIntent()
     data class ChangeCategory(val value: CategoryModel) : AddPointIntent()
-    data class OnClickSave(val id: Long?) : AddPointIntent()
+    data class OnClickSave(val id: Long?,val onClick:()->Unit) : AddPointIntent()
 }
 
 sealed class AddPointAction : MviAction {

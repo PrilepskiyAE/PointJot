@@ -119,16 +119,5 @@ fun PhotoCardComponent(
         if (isLoading) {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
         }
-
-        errorMessage?.let { error ->
-            Column(modifier = Modifier.align(Alignment.Center)) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_foto_error),
-                    contentDescription = "Error",
-                    modifier =  Modifier.size(Spaces.space64)
-                )
-                errorMessage?.let { Text(text = it) }
-            }
-        }
     }
 }

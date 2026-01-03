@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.prilepskiy.common.DEFAULT_LONG
 import com.prilepskiy.common.EMPTY_STRING
 import com.prilepskiy.common.ID_SECOND_CATEGORY
+import com.prilepskiy.common.MAX_LEN_INPUT_BASIC
 import com.prilepskiy.common.MviBaseViewModel
 import com.prilepskiy.common.Reducer
 import com.prilepskiy.common.subscribe
@@ -58,21 +59,29 @@ class AddPointViewModel @Inject constructor(
 
                 if (intent.id == DEFAULT_LONG) {
                     viewModelScope.launch {
-                        addPointUseCase.invoke(
-                            PointModel(
-                                pointId = intent.id.toLong(),
-                                categoryId = viewState.selectedCategory?.categoryId
-                                    ?: ID_SECOND_CATEGORY,
-                                uri = viewState.selectedImageUri ?: EMPTY_STRING,
-                                pointName = viewState.pointName,
-                                motivation = viewState.motivation,
-                                reward = viewState.reward,
-                                date = viewState.date,
-                                isActive = true,
-                                fullNote = 0,
-                                colFinished = 0
+                        if (viewState.pointName.length <= MAX_LEN_INPUT_BASIC &&
+                            viewState.motivation.length <= MAX_LEN_INPUT_BASIC &&
+                            viewState.reward.length <= MAX_LEN_INPUT_BASIC
+                        ) {
+                            addPointUseCase.invoke(
+                                PointModel(
+                                    pointId = intent.id.toLong(),
+                                    categoryId = viewState.selectedCategory?.categoryId
+                                        ?: ID_SECOND_CATEGORY,
+                                    uri = viewState.selectedImageUri ?: EMPTY_STRING,
+                                    pointName = viewState.pointName,
+                                    motivation = viewState.motivation,
+                                    reward = viewState.reward,
+                                    date = viewState.date,
+                                    isActive = true,
+                                    fullNote = 0,
+                                    colFinished = 0
+                                )
                             )
-                        )
+                            intent.onClick.invoke()
+                        }else{
+                            onAction(OnLoading(false))
+                        }
                     }
                 } else {
                     intent.id?.let { id ->
@@ -80,21 +89,30 @@ class AddPointViewModel @Inject constructor(
                             onAction(OnLoading(true))
                         }, success = { list ->
                             list.firstOrNull()?.let { item ->
-                                addPointUseCase.invoke(
-                                    PointModel(
-                                        pointId = intent.id,
-                                        categoryId = viewState.selectedCategory?.categoryId
-                                            ?: ID_SECOND_CATEGORY,
-                                        uri = viewState.selectedImageUri ?: EMPTY_STRING,
-                                        pointName = viewState.pointName,
-                                        motivation = viewState.motivation,
-                                        reward = viewState.reward,
-                                        date = viewState.date,
-                                        isActive = item.isActive,
-                                        fullNote = item.fullNote,
-                                        colFinished = item.colFinished
+                                if (viewState.pointName.length <= MAX_LEN_INPUT_BASIC &&
+                                    viewState.motivation.length <= MAX_LEN_INPUT_BASIC &&
+                                    viewState.reward.length <= MAX_LEN_INPUT_BASIC
+                                ) {
+                                    addPointUseCase.invoke(
+                                        PointModel(
+                                            pointId = intent.id,
+                                            categoryId = viewState.selectedCategory?.categoryId
+                                                ?: ID_SECOND_CATEGORY,
+                                            uri = viewState.selectedImageUri ?: EMPTY_STRING,
+                                            pointName = viewState.pointName,
+                                            motivation = viewState.motivation,
+                                            reward = viewState.reward,
+                                            date = viewState.date,
+                                            isActive = item.isActive,
+                                            fullNote = item.fullNote,
+                                            colFinished = item.colFinished
+                                        )
                                     )
-                                )
+                                    intent.onClick.invoke()
+                                }else{
+
+                                    onAction(OnLoading(false))
+                                }
                             }
                         }, error = {
                             onAction(OnError("Ой что-то пошло не так"))
