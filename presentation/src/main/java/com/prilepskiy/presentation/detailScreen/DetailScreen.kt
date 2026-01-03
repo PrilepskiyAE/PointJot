@@ -25,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -52,6 +53,8 @@ import com.prilepskiy.domain.model.NoteModel
 import com.prilepskiy.domain.model.PointModel
 import com.prilepskiy.domain.model.StageModel
 import com.prilepskiy.presentation.R
+import com.prilepskiy.presentation.uiComponent.AddNoteDialogComponent
+import com.prilepskiy.presentation.uiComponent.AddStageDialogComponent
 import com.prilepskiy.presentation.uiComponent.PhotoCardComponent
 import com.prilepskiy.presentation.uiComponent.TabsStandardComponents
 import com.prilepskiy.presentation.uiComponent.ToolbarStandardComponent
@@ -64,11 +67,24 @@ fun DetailScreen(
     viewModel: DetailViewModel = hiltViewModel()
 ) {
     val state = viewModel.viewState
-
+    var openDialogAddNote by remember { mutableStateOf(false) }
+    var openDialogAddStage by remember { mutableStateOf(false) }
     LaunchedEffect(point) {
         point?.let {
             viewModel.onIntent(DetailIntent.Init(it))
         }
+    }
+
+    if (openDialogAddNote) {
+        AddNoteDialogComponent(
+            noteModel = NoteModel(),
+            onDismiss = { openDialogAddNote = false },
+            onConfirm = { openDialogAddNote = false })
+    }
+    if (openDialogAddStage) {
+        AddStageDialogComponent(
+            onDismiss = { openDialogAddStage = false },
+            onConfirm = { openDialogAddStage = false })
     }
 
     state.point?.let { pt ->
@@ -86,8 +102,8 @@ fun DetailScreen(
             onUpdatePoint = onUpdatePoint,
             onSuccessPoint = { viewModel.onIntent(DetailIntent.OnClickSuccess { onPopBack.invoke() }) },
             onDeletePoint = { viewModel.onIntent(DetailIntent.OnClickDelete { onPopBack.invoke() }) },
-            addNote = {},
-            addStage = {},
+            addNote = { openDialogAddNote = true },
+            addStage = { openDialogAddStage = true },
             onSuccessStage = {},
             onDeleteStage = {},
             onSuccessNote = {},
@@ -141,9 +157,9 @@ fun DetailScreen(
             )
             TabsStandardComponents(
                 tabs = listOf(
-                    "Описание",
-                    "Этапы",
-                    "Заметки"
+                    stringResource(R.string.detail_tab1),
+                    stringResource(R.string.detail_tab2),
+                    stringResource(R.string.detail_tab3)
                 ), onClickTab = {
                     tabId = it
                 }
@@ -232,7 +248,7 @@ fun DetailTabScreen(
             modifier = Modifier
                 .padding(Spaces.space8)
                 .align(alignment = Alignment.Start),
-            text = "Наименование:",
+            text = stringResource(R.string.detaillabel1),
             style = TitleTextStyles.H4W700,
             color = Gray90
         )
@@ -249,7 +265,7 @@ fun DetailTabScreen(
             modifier = Modifier
                 .padding(Spaces.space8)
                 .align(alignment = Alignment.Start),
-            text = "Мотивация:",
+            text = stringResource(R.string.detaillabel2),
             style = TitleTextStyles.H4W700,
             color = Gray90
         )
@@ -266,7 +282,7 @@ fun DetailTabScreen(
             modifier = Modifier
                 .padding(Spaces.space8)
                 .align(alignment = Alignment.Start),
-            text = "Награда:",
+            text = stringResource(R.string.detaillabel3),
             style = TitleTextStyles.H4W700,
             color = Gray90
         )
@@ -282,7 +298,7 @@ fun DetailTabScreen(
             modifier = Modifier
                 .padding(Spaces.space8)
                 .align(alignment = Alignment.Start),
-            text = "Категория:",
+            text = stringResource(R.string.detaillabel4),
             style = TitleTextStyles.H4W700,
             color = Gray90
         )

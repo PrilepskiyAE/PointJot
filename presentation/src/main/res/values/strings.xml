@@ -35,6 +35,7 @@
     <string name="input2">Мотивация</string>
     <string name="input3">Награда</string>
     <string name="input4">Категория</string>
+    <string name="input5">Описание</string>
     <string name="label1">Конкретная и измеримая цель</string>
     <string name="label2">Почему эта цель важна для Вас?</string>
     <string name="label3">Как вы вознаградите себя</string>
@@ -43,5 +44,12 @@
     <string name="progress">Выполнено: %1$d %</string>
     <string name="del_point">Удалить задачу</string>
     <string name="seltct_category">Выберите категорию</string>
+    <string name="detail_tab1">Описание</string>
+    <string name="detail_tab2">Этапы</string>
+    <string name="detail_tab3">Заметки</string>
+    <string name="detaillabel1">Наименование:</string>
+    <string name="detaillabel2">Мотивация:</string>
+    <string name="detaillabel3">Награда:</string>
+    <string name="detaillabel4">Категория:</string>
 
 </resources>
