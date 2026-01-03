@@ -10,6 +10,10 @@ const val ID_ALL_CATEGORY=1L
 const val ID_SECOND_CATEGORY=2L
 const val EMPTY_STRING = ""
 
+const val TAB_DETAIL= 0
+const val TAB_STAGE=1
+const val TAB_NOTE=2
+
 const val VERSION_DATABASE = 1
 
 const val DATABASE_NAME = "PointDataBase"

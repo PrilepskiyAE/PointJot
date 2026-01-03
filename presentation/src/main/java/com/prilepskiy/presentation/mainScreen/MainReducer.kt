@@ -1,8 +1,6 @@
 package com.prilepskiy.presentation.mainScreen
 
-import com.prilepskiy.common.DEFAULT_INT
 import com.prilepskiy.common.Reducer
-import com.prilepskiy.domain.model.CategoryModel
 import javax.inject.Inject
 
 class MainReducer @Inject constructor() : Reducer<MainAction, MainState> {
