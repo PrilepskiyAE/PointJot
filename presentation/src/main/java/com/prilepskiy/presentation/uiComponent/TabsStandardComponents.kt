@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Color.Companion.Blue
 import androidx.compose.ui.unit.dp
 import com.prilepskiy.common.Black
 import com.prilepskiy.common.Gray400
+import com.prilepskiy.common.Gray90
 import com.prilepskiy.common.Transparent
 import com.prilepskiy.common.White
 import com.prilepskiy.common.Yellow500
@@ -47,11 +48,11 @@ fun TabsStandardComponents(tabs: List<String>, onClickTab: ((selectedTabIndex: I
                         Text(
                             modifier = Modifier.padding(vertical = 4.dp),
                             text = title,
-                            color = Black
+                            color = Gray90
                         )
                         Divider(
                             thickness = 2.dp,
-                            color = if (selectedTabIndex == index) Yellow500 else Transparent
+                            color = if (selectedTabIndex == index) Gray90 else Transparent
                         )
                     }
 

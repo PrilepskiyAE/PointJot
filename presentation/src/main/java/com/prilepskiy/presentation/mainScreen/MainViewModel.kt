@@ -36,7 +36,6 @@ class MainViewModel @Inject constructor(
         when (intent) {
             is MainIntent.OnError -> onAction(OnError(intent.error))
             is MainIntent.OnLoading -> onAction(OnLoading(intent.isLoading))
-            is MainIntent.OnClickPoint -> {}
             is MainIntent.AddCategory -> {
                 getAllCategoryAction { list ->
                     if (list.find { it.categoryName == intent.item.categoryName } == null) {

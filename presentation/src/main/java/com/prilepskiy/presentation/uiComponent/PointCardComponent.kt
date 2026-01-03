@@ -28,6 +28,7 @@ import com.prilepskiy.common.Blue600
 import com.prilepskiy.common.Gray100
 import com.prilepskiy.common.Gray300
 import com.prilepskiy.common.Gray80
+import com.prilepskiy.common.Gray90
 import com.prilepskiy.common.Green100
 import com.prilepskiy.common.Green200
 import com.prilepskiy.common.Green500
@@ -53,11 +54,15 @@ fun PointCardComponent(value: PointModel, goToPoint: (Long) -> Unit) {
         colors = CardDefaults.cardColors(containerColor = Blue600),
         border = BorderStroke(Spaces.space1, Green100)
     ) {
-        Row(modifier = Modifier.fillMaxSize().padding(Spaces.space8)) {
+        Row(modifier = Modifier
+            .fillMaxSize()
+            .padding(Spaces.space8)) {
             if (value.uri.isNotEmpty()) {
                 PhotoCardComponent(path = value.uri, size = Spaces.space150, onClick = {})
-            }else{
-                Box(modifier = Modifier.size(Spaces.space150).background(Gray300))
+            } else {
+                Box(modifier = Modifier
+                    .size(Spaces.space150)
+                    .background(Gray300))
             }
             Column(modifier = Modifier.padding(start = Spaces.space16)) {
                 Text(
@@ -77,7 +82,7 @@ fun PointCardComponent(value: PointModel, goToPoint: (Long) -> Unit) {
                 ) {}
                 Spacer(Modifier.height(Spaces.space8))
                 when {
-                    (value.date+86_400_000) < currenData && value.isActive-> {
+                    (value.date + 86_400_000) < currenData && value.isActive -> {
                         Text(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -89,13 +94,15 @@ fun PointCardComponent(value: PointModel, goToPoint: (Long) -> Unit) {
                     }
 
                     else -> {
-                        Text(text = stringResource(
-                            R.string.days_left, try {
-                                (value.date - currenData) / 86_400_000
-                            } catch (e: Exception) {
-                                0L
-                            }
-                        )
+                        Text(
+                            text = stringResource(
+                                R.string.days_left, try {
+                                    (value.date - currenData) / 86_400_000
+                                } catch (e: Exception) {
+                                    0L
+                                }
+                            ),
+                            color = Gray90,
                         )
                         TaskProgressBar(value.colFinished, value.fullNote)
 
@@ -130,11 +137,12 @@ fun TaskProgressBar(
 
         Text(
             text = "Выполнено: $progress %",
+            color = Gray90,
             modifier = Modifier.padding(bottom = Spaces.space8)
         )
 
         LinearProgressIndicator(
-            progress = { if (progress.toFloat() != 0f) (progress.toFloat()/100) else 0f },
+            progress = { if (progress.toFloat() != 0f) (progress.toFloat() / 100) else 0f },
             modifier = Modifier.fillMaxWidth(),
             color = Green500,
             trackColor = Green200,
