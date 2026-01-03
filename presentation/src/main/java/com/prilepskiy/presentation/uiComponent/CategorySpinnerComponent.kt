@@ -23,10 +23,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import com.prilepskiy.common.Gray80
 import com.prilepskiy.common.Gray90
 import com.prilepskiy.common.Spaces
 import com.prilepskiy.domain.model.CategoryModel
+import com.prilepskiy.presentation.R
 
 
 @Composable
@@ -37,7 +39,7 @@ fun CategorySpinnerComponent(
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
-    val selectedName = selectedCategory?.categoryName ?: "Выберите категорию"
+    val selectedName = selectedCategory?.categoryName ?: stringResource(R.string.seltct_category)
 
     Box(modifier) {
         Row(

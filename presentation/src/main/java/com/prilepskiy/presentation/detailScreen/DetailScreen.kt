@@ -1,7 +1,6 @@
 package com.prilepskiy.presentation.detailScreen
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -9,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -41,7 +41,6 @@ import com.prilepskiy.common.Gray200
 import com.prilepskiy.common.Gray80
 import com.prilepskiy.common.Gray90
 import com.prilepskiy.common.ID_ALL_CATEGORY
-import com.prilepskiy.common.LabelTextStyles
 import com.prilepskiy.common.Sizes
 import com.prilepskiy.common.Spaces
 import com.prilepskiy.common.TAB_DETAIL
@@ -49,7 +48,9 @@ import com.prilepskiy.common.TAB_NOTE
 import com.prilepskiy.common.TAB_STAGE
 import com.prilepskiy.common.TitleTextStyles
 import com.prilepskiy.domain.model.CategoryModel
+import com.prilepskiy.domain.model.NoteModel
 import com.prilepskiy.domain.model.PointModel
+import com.prilepskiy.domain.model.StageModel
 import com.prilepskiy.presentation.R
 import com.prilepskiy.presentation.uiComponent.PhotoCardComponent
 import com.prilepskiy.presentation.uiComponent.TabsStandardComponents
@@ -79,12 +80,18 @@ fun DetailScreen(
                 categoryId = ID_ALL_CATEGORY,
                 categoryName = stringResource(R.string.all)
             ),
+            notes = state.noteList,
+            stages = state.stageList,
             onPopBack = onPopBack,
             onUpdatePoint = onUpdatePoint,
             onSuccessPoint = { viewModel.onIntent(DetailIntent.OnClickSuccess { onPopBack.invoke() }) },
             onDeletePoint = { viewModel.onIntent(DetailIntent.OnClickDelete { onPopBack.invoke() }) },
             addNote = {},
-            addStage = {}
+            addStage = {},
+            onSuccessStage = {},
+            onDeleteStage = {},
+            onSuccessNote = {},
+            onDeleteNote = {},
         )
     }
 
@@ -94,12 +101,18 @@ fun DetailScreen(
 fun DetailScreen(
     point: PointModel,
     category: CategoryModel,
+    notes: List<NoteModel>,
+    stages: List<StageModel>,
     onPopBack: () -> Unit,
     onUpdatePoint: (Long?) -> Unit,
     onSuccessPoint: () -> Unit,
     onDeletePoint: () -> Unit,
     addNote: () -> Unit,
     addStage: () -> Unit,
+    onSuccessStage: () -> Unit,
+    onDeleteStage: () -> Unit,
+    onSuccessNote: () -> Unit,
+    onDeleteNote: () -> Unit
 ) {
     var tabId by remember { mutableIntStateOf(DEFAULT_INT) }
 
@@ -147,19 +160,17 @@ fun DetailScreen(
 
                 TAB_STAGE -> {
                     StageTabScreen(
-                        point = point,
-                        onPopBack = onPopBack,
-                        onUpdatePoint = onUpdatePoint,
-                        onSuccessPoint = onSuccessPoint
+                        stages = stages,
+                        onSuccessStage = onSuccessStage,
+                        onDeleteStage = onDeleteStage
                     )
                 }
 
                 TAB_NOTE -> {
                     NoteTabScreen(
-                        point = point,
-                        onPopBack = onPopBack,
-                        onUpdatePoint = onUpdatePoint,
-                        onSuccessPoint = onSuccessPoint
+                        notes = notes,
+                        onSuccessNote = onSuccessNote,
+                        onDeleteNote = onDeleteNote
                     )
                 }
 
@@ -303,35 +314,39 @@ fun DetailTabScreen(
 
 @Composable
 fun NoteTabScreen(
-    point: PointModel,
-    onPopBack: () -> Unit,
-    onUpdatePoint: (Long?) -> Unit,
-    onSuccessPoint: () -> Unit
+    notes: List<NoteModel>,
+    onSuccessNote: () -> Unit,
+    onDeleteNote: () -> Unit
 ) {
-    val scrollState = rememberScrollState()
-    Column(
-        modifier = Modifier.verticalScroll(scrollState),
-        horizontalAlignment = Alignment.CenterHorizontally
-    )
-    {
-        Text("Note")
+
+    if (notes.isEmpty()) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(stringResource(R.string.empty_note), color = Gray90)
+        }
+    } else {
+        LazyColumn { }
     }
+
 }
 
 @Composable
 fun StageTabScreen(
-    point: PointModel,
-    onPopBack: () -> Unit,
-    onUpdatePoint: (Long?) -> Unit,
-    onSuccessPoint: () -> Unit
+    stages: List<StageModel>,
+    onSuccessStage: () -> Unit,
+    onDeleteStage: () -> Unit
 ) {
-    val scrollState = rememberScrollState()
-    Column(
-        modifier = Modifier.verticalScroll(scrollState),
-        horizontalAlignment = Alignment.CenterHorizontally
-    )
-    {
-        Text("Stage")
+    if (stages.isEmpty()) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(stringResource(R.string.empty_stages), color = Gray90)
+        }
+    } else {
+        LazyColumn { }
     }
 }
 

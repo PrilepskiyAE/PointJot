@@ -9,6 +9,8 @@
     <string name="main_screen_active">Активные</string>
     <string name="main_screen_closed">Завершенные</string>
     <string name="empty_point">Нет целей</string>
+    <string name="empty_stages">Нет этапов</string>
+    <string name="empty_note">Нет заметок</string>
     <string name="main_screen_btn_add">Добавить</string>
     <string name="all">Все</string>
     <string name="different">Разное</string>
@@ -40,5 +42,6 @@
     <string name="days_left">Осталось дней %1$d</string>
     <string name="progress">Выполнено: %1$d %</string>
     <string name="del_point">Удалить задачу</string>
+    <string name="seltct_category">Выберите категорию</string>
 
 </resources>

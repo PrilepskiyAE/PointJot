@@ -183,11 +183,6 @@ private inline fun AppBar(
     }
 }
 
-@Preview("toolbar")
-@Composable
-fun ToolbarPreview() {
-    ToolbarStandardComponent(title="Цели")
-}
 
 
 
