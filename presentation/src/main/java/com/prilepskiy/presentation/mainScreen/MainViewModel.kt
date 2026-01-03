@@ -66,6 +66,7 @@ class MainViewModel @Inject constructor(
                 }
             }
             is MainIntent.InitPoint -> {
+                onAction(OnClickTab(true))
                 getAllCategoryAction { list ->
                     if (list.isEmpty()) {
                         val first = CategoryModel(

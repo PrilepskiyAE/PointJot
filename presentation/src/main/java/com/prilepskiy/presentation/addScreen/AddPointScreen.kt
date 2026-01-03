@@ -7,9 +7,11 @@ import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -90,8 +92,10 @@ fun AddPointScreen(
                 viewModel.onIntent(AddPointIntent.ChangeDate(it))
             },
             saveOnClick = {
-                viewModel.onIntent(AddPointIntent.OnClickSave(point))
-                onPopBack.invoke()
+                viewModel.onIntent(AddPointIntent.OnClickSave(point){
+                    onPopBack.invoke()
+                })
+
             })
     }
 }
@@ -172,7 +176,7 @@ private fun AddPointScreen(
             iconColor = Gray80,
             firstIcon = Icons.Default.ArrowBack,
             secondIcon = Icons.Default.Check,
-            onSecondClick = saveOnClick
+            onSecondClick = { saveOnClick.invoke() }
         )
         if (selectedImageUri != null) {
             PhotoCardComponent(
@@ -224,6 +228,7 @@ private fun AddPointScreen(
             selectedCategory = selectedCategory,
             onCategorySelected = changeCategory
         )
+        Box(modifier = Modifier.size(Spaces.space130))
     }
 }
 

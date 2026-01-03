@@ -14,7 +14,6 @@ import javax.inject.Singleton
 class AddPointUseCase @Inject constructor(private val repository: PointRepository) {
     suspend operator fun invoke(pointModel: PointModel) {
         withContext(Dispatchers.IO) {
-            Log.d("TAG999", "OnClickSave2: $pointModel")
             repository.insertPoint(
                 PointEntity(
                     pointId = pointModel.pointId,

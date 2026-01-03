@@ -10,7 +10,7 @@ import javax.inject.Singleton
 
 @Singleton
 class DeletePointUseCase @Inject constructor(private val repository: PointRepository){
-    operator fun invoke(id: Long) {
-        repository.deletePoint(id).flowOn(Dispatchers.IO)
+    suspend operator fun invoke(id: Long) {
+        repository.deletePoint(id)
     }
 }
