@@ -12,8 +12,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
@@ -55,9 +55,12 @@ import com.prilepskiy.domain.model.StageModel
 import com.prilepskiy.presentation.R
 import com.prilepskiy.presentation.uiComponent.AddNoteDialogComponent
 import com.prilepskiy.presentation.uiComponent.AddStageDialogComponent
+import com.prilepskiy.presentation.uiComponent.NoteItemComponent
 import com.prilepskiy.presentation.uiComponent.PhotoCardComponent
+import com.prilepskiy.presentation.uiComponent.StageItemComponent
 import com.prilepskiy.presentation.uiComponent.TabsStandardComponents
 import com.prilepskiy.presentation.uiComponent.ToolbarStandardComponent
+import com.prilepskiy.presentation.uiComponent.dateFormat
 
 @Composable
 fun DetailScreen(
@@ -67,24 +70,46 @@ fun DetailScreen(
     viewModel: DetailViewModel = hiltViewModel()
 ) {
     val state = viewModel.viewState
-    var openDialogAddNote by remember { mutableStateOf(false) }
-    var openDialogAddStage by remember { mutableStateOf(false) }
+    var openDialogAddNote by remember {
+        mutableStateOf(
+            Pair(
+                false,
+                NoteModel(pointId = point ?: 0L),
+            )
+        )
+    }
+    var openDialogAddStage by remember {
+        mutableStateOf(
+            Pair(
+                false,
+                StageModel(pointId = point ?: 0L)
+            )
+        )
+    }
     LaunchedEffect(point) {
         point?.let {
             viewModel.onIntent(DetailIntent.Init(it))
         }
     }
 
-    if (openDialogAddNote) {
+    if (openDialogAddNote.first) {
         AddNoteDialogComponent(
-            noteModel = NoteModel(),
-            onDismiss = { openDialogAddNote = false },
-            onConfirm = { openDialogAddNote = false })
+            noteModel = openDialogAddNote.second,
+            onDismiss = { openDialogAddNote = Pair(false, NoteModel(pointId = point ?: 0L)) },
+            onConfirm = { note ->
+                viewModel.onIntent(DetailIntent.AddNote(note))
+                openDialogAddNote = Pair(false, NoteModel(pointId = point ?: 0L))
+            })
     }
-    if (openDialogAddStage) {
+    if (openDialogAddStage.first) {
         AddStageDialogComponent(
-            onDismiss = { openDialogAddStage = false },
-            onConfirm = { openDialogAddStage = false })
+            stageModel = openDialogAddStage.second,
+            onDismiss = { openDialogAddStage = Pair(false, StageModel(pointId = point ?: 0L)) },
+            onConfirm = { stage ->
+                viewModel.onIntent(DetailIntent.AddStage(stage))
+                openDialogAddStage = Pair(false, StageModel(pointId = point ?: 0L))
+            }
+        )
     }
 
     state.point?.let { pt ->
@@ -102,12 +127,11 @@ fun DetailScreen(
             onUpdatePoint = onUpdatePoint,
             onSuccessPoint = { viewModel.onIntent(DetailIntent.OnClickSuccess { onPopBack.invoke() }) },
             onDeletePoint = { viewModel.onIntent(DetailIntent.OnClickDelete { onPopBack.invoke() }) },
-            addNote = { openDialogAddNote = true },
-            addStage = { openDialogAddStage = true },
-            onSuccessStage = {},
-            onDeleteStage = {},
-            onSuccessNote = {},
-            onDeleteNote = {},
+            addNote = { openDialogAddNote = Pair(true, it) },
+            addStage = { openDialogAddStage = Pair(true, it) },
+            onSuccessStage = { viewModel.onIntent(DetailIntent.OnSuccessStage(it)) },
+            onDeleteStage = { viewModel.onIntent(DetailIntent.OnDeleteStage(it)) },
+            onDeleteNote = { viewModel.onIntent(DetailIntent.OnDeleteNote(it)) },
         )
     }
 
@@ -123,14 +147,14 @@ fun DetailScreen(
     onUpdatePoint: (Long?) -> Unit,
     onSuccessPoint: () -> Unit,
     onDeletePoint: () -> Unit,
-    addNote: () -> Unit,
-    addStage: () -> Unit,
-    onSuccessStage: () -> Unit,
-    onDeleteStage: () -> Unit,
-    onSuccessNote: () -> Unit,
-    onDeleteNote: () -> Unit
+    addNote: (NoteModel) -> Unit,
+    addStage: (StageModel) -> Unit,
+    onSuccessStage: (StageModel) -> Unit,
+    onDeleteStage: (StageModel) -> Unit,
+    onDeleteNote: (NoteModel) -> Unit
 ) {
     var tabId by remember { mutableIntStateOf(DEFAULT_INT) }
+
 
     Box(
         modifier = Modifier
@@ -149,7 +173,7 @@ fun DetailScreen(
                 onBackPressed = onPopBack,
                 textColor = Gray80,
                 iconColor = Gray80,
-                firstIcon = Icons.Default.ArrowBack,
+                firstIcon = Icons.AutoMirrored.Filled.ArrowBack,
                 secondIcon = Icons.Default.Check,
                 onSecondClick = onSuccessPoint,
                 thirdIcon = Icons.Filled.Delete,
@@ -178,15 +202,16 @@ fun DetailScreen(
                     StageTabScreen(
                         stages = stages,
                         onSuccessStage = onSuccessStage,
-                        onDeleteStage = onDeleteStage
+                        onDeleteStage = onDeleteStage,
+                        updateStage = addStage
                     )
                 }
 
                 TAB_NOTE -> {
                     NoteTabScreen(
                         notes = notes,
-                        onSuccessNote = onSuccessNote,
-                        onDeleteNote = onDeleteNote
+                        onDeleteNote = onDeleteNote,
+                        updateNote = addNote
                     )
                 }
 
@@ -205,8 +230,8 @@ fun DetailScreen(
                 containerColor = Gray80,
                 onClick = {
                     when (tabId) {
-                        TAB_STAGE -> addStage.invoke()
-                        TAB_NOTE -> addNote.invoke()
+                        TAB_STAGE -> addStage.invoke(StageModel(pointId = point.pointId))
+                        TAB_NOTE -> addNote.invoke(NoteModel(pointId = point.pointId))
                     }
 
                 },
@@ -244,40 +269,43 @@ fun DetailTabScreen(
                     .background(Gray100)
             )
         }
-        Text(
-            modifier = Modifier
-                .padding(Spaces.space8)
-                .align(alignment = Alignment.Start),
-            text = stringResource(R.string.detaillabel1),
-            style = TitleTextStyles.H4W700,
-            color = Gray90
-        )
-        Text(
-            modifier = Modifier
-                .padding(Spaces.space8)
-                .align(alignment = Alignment.Start),
-            text = point.pointName,
-            style = BodyTextStyles.Large,
-            color = Gray200
-        )
-
-        Text(
-            modifier = Modifier
-                .padding(Spaces.space8)
-                .align(alignment = Alignment.Start),
-            text = stringResource(R.string.detaillabel2),
-            style = TitleTextStyles.H4W700,
-            color = Gray90
-        )
-        Text(
-            modifier = Modifier
-                .padding(Spaces.space8)
-                .align(alignment = Alignment.Start),
-            text = point.motivation,
-            style = BodyTextStyles.Large,
-            color = Gray200
-        )
-
+        if (point.pointName.isNotEmpty()) {
+            Text(
+                modifier = Modifier
+                    .padding(Spaces.space8)
+                    .align(alignment = Alignment.Start),
+                text = stringResource(R.string.detaillabel1),
+                style = TitleTextStyles.H4W700,
+                color = Gray90
+            )
+            Text(
+                modifier = Modifier
+                    .padding(Spaces.space8)
+                    .align(alignment = Alignment.Start),
+                text = point.pointName,
+                style = BodyTextStyles.Large,
+                color = Gray200
+            )
+        }
+        if (point.motivation.isNotEmpty()) {
+            Text(
+                modifier = Modifier
+                    .padding(Spaces.space8)
+                    .align(alignment = Alignment.Start),
+                text = stringResource(R.string.detaillabel2),
+                style = TitleTextStyles.H4W700,
+                color = Gray90
+            )
+            Text(
+                modifier = Modifier
+                    .padding(Spaces.space8)
+                    .align(alignment = Alignment.Start),
+                text = point.motivation,
+                style = BodyTextStyles.Large,
+                color = Gray200
+            )
+        }
+        if (point.reward.isNotEmpty()){
         Text(
             modifier = Modifier
                 .padding(Spaces.space8)
@@ -294,6 +322,8 @@ fun DetailTabScreen(
             style = BodyTextStyles.Large,
             color = Gray200
         )
+        }
+
         Text(
             modifier = Modifier
                 .padding(Spaces.space8)
@@ -307,6 +337,23 @@ fun DetailTabScreen(
                 .padding(Spaces.space8)
                 .align(alignment = Alignment.Start),
             text = category.categoryName,
+            style = BodyTextStyles.Large,
+            color = Gray200
+        )
+
+        Text(
+            modifier = Modifier
+                .padding(Spaces.space8)
+                .align(alignment = Alignment.Start),
+            text = stringResource(R.string.detaillabel5),
+            style = TitleTextStyles.H4W700,
+            color = Gray90
+        )
+        Text(
+            modifier = Modifier
+                .padding(Spaces.space8)
+                .align(alignment = Alignment.Start),
+            text = dateFormat(point.date),
             style = BodyTextStyles.Large,
             color = Gray200
         )
@@ -331,8 +378,8 @@ fun DetailTabScreen(
 @Composable
 fun NoteTabScreen(
     notes: List<NoteModel>,
-    onSuccessNote: () -> Unit,
-    onDeleteNote: () -> Unit
+    updateNote: (NoteModel) -> Unit,
+    onDeleteNote: (NoteModel) -> Unit
 ) {
 
     if (notes.isEmpty()) {
@@ -343,7 +390,19 @@ fun NoteTabScreen(
             Text(stringResource(R.string.empty_note), color = Gray90)
         }
     } else {
-        LazyColumn { }
+        LazyColumn {
+            items(notes.size) {
+                NoteItemComponent(
+                    pos = it,
+                    noteModel = notes[it],
+                    openNote = updateNote,
+                    onDeleteNote = onDeleteNote
+                )
+            }
+            item {
+                Box(modifier = Modifier.size(Spaces.space130))
+            }
+        }
     }
 
 }
@@ -351,8 +410,9 @@ fun NoteTabScreen(
 @Composable
 fun StageTabScreen(
     stages: List<StageModel>,
-    onSuccessStage: () -> Unit,
-    onDeleteStage: () -> Unit
+    onSuccessStage: (StageModel) -> Unit,
+    updateStage: (StageModel) -> Unit,
+    onDeleteStage: (StageModel) -> Unit,
 ) {
     if (stages.isEmpty()) {
         Box(
@@ -362,7 +422,20 @@ fun StageTabScreen(
             Text(stringResource(R.string.empty_stages), color = Gray90)
         }
     } else {
-        LazyColumn { }
+        LazyColumn {
+            items(stages.size) {
+                StageItemComponent(
+                    stageModel = stages[it],
+                    onSuccessStage = onSuccessStage,
+                    openStage = updateStage,
+                    onDeleteStage = onDeleteStage
+                )
+
+            }
+            item {
+                Box(modifier = Modifier.size(Spaces.space130))
+            }
+        }
     }
 }
 

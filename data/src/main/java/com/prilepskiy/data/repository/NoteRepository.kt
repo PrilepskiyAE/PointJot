@@ -22,7 +22,7 @@ class NoteRepository @Inject constructor(
     }
 
 
-    fun insert(noteEntity: NoteEntity) = emitFlow {
+    suspend fun insert(noteEntity: NoteEntity) {
         dao.insert(noteEntity)
     }
 
@@ -32,8 +32,12 @@ class NoteRepository @Inject constructor(
     }
 
 
-    fun deleteNote(id: Long) = emitFlow {
+    suspend fun deleteNote(id: Long) {
         dao.deleteNote(id)
+    }
+
+    suspend fun deleteNotesForPoint(id: Long) {
+        dao.deleteNotesForPoint(id)
     }
 
 }

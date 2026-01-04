@@ -18,7 +18,7 @@ sealed class AddPointIntent : MviIntent {
     data class ChangeDate(val value: Long) : AddPointIntent()
     data class ChangeReward(val value: String) : AddPointIntent()
     data class ChangeCategory(val value: CategoryModel) : AddPointIntent()
-    data class OnClickSave(val id: Long?,val onClick:()->Unit) : AddPointIntent()
+    data class OnClickSave(val id: Long?, val onClick: () -> Unit) : AddPointIntent()
 }
 
 sealed class AddPointAction : MviAction {
@@ -42,13 +42,14 @@ sealed class AddPointAction : MviAction {
     data class InitCategory(val value: List<CategoryModel>) : AddPointAction()
     data class ChangeCategory(val value: CategoryModel) : AddPointAction()
 }
+
 @Immutable
 data class AddPointState(
     val pointId: Long = DEFAULT_LONG,
     val pointName: String = EMPTY_STRING,
     val motivation: String = EMPTY_STRING,
     val reward: String = EMPTY_STRING,
-    val date: Long =  System.currentTimeMillis(),
+    val date: Long = System.currentTimeMillis(),
     val selectedImageUri: String? = null,
     val categoryList: List<CategoryModel> = listOf(),
     val selectedCategory: CategoryModel? = null,

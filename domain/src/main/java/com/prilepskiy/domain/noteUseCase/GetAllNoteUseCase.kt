@@ -9,18 +9,16 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
-
-
-
 @Singleton
 class GetAllNoteUseCase @Inject constructor(private val repository: NoteRepository) {
     operator fun invoke(): Flow<List<NoteModel>> = repository.getAllNote().map { model ->
         model.map {
             NoteModel(
-                noteId=it.noteId,
-                pointId=it.pointId,
-                uri=it.uri,
-                note=it.note
+                noteId = it.noteId,
+                pointId = it.pointId,
+                uri = it.uri,
+                note = it.note,
+                date =  it.date
             )
         }
     }.flowOn(Dispatchers.IO)

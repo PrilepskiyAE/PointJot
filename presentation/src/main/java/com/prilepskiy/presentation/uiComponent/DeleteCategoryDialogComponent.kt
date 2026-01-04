@@ -7,10 +7,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.res.stringResource
+import com.prilepskiy.common.Black
+import com.prilepskiy.common.Blue600
 import com.prilepskiy.common.BodyTextStyles
 import com.prilepskiy.common.Gray80
 import com.prilepskiy.common.Red500
+import com.prilepskiy.common.Spaces
 import com.prilepskiy.presentation.R
 
 @Composable
@@ -28,13 +32,15 @@ fun DeleteCategoryDialogComponent(
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
+                    modifier = Modifier.padding(vertical = Spaces.space8),
                     text = stringResource(R.string.dialiog_del_category_label1, categoryName),
-                    style = BodyTextStyles.Medium,
+                    style = BodyTextStyles.Large,
+                    color = Black
                 )
                 Text(
                     text = stringResource(R.string.dialiog_del_category_label2),
                      style = BodyTextStyles.Large,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = Red500
                 )
             }
         },

@@ -23,7 +23,7 @@ fun RootScreen(
     ) {
         mainNavigate(
             goToPoint = { pointId -> rootNavController.navigationToDetail(pointId) },
-            goToAddPoint = {pointId -> rootNavController.navigationToAddPoint(pointId)},
+            goToAddPoint = { pointId -> rootNavController.navigationToAddPoint(pointId) },
             popBack = { rootNavController.popBackStack() })
     }
 }

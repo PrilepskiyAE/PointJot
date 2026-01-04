@@ -14,12 +14,12 @@ import com.prilepskiy.data.database.entity.StageEntity
 
 
 @Database(
-    entities = [NoteEntity::class, StageEntity::class, PointEntity::class, CategoryEntity::class] ,
+    entities = [NoteEntity::class, StageEntity::class, PointEntity::class, CategoryEntity::class],
     version = VERSION_DATABASE,
     exportSchema = true
 )
 
-abstract class  PointDataBase : RoomDatabase() {
+abstract class PointDataBase : RoomDatabase() {
     abstract val pointDao: PointDao
     abstract val stageDao: StageDao
     abstract val noteDao: NoteDao

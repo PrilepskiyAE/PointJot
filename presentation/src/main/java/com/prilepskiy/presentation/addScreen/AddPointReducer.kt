@@ -26,12 +26,13 @@ class AddPointReducer @Inject constructor() : Reducer<AddPointAction, AddPointSt
             }
 
             is AddPointAction.InitPoint -> {
-                val selectedCategory=state.categoryList.find { it.categoryId==action.selectedCategoryId }
+                val selectedCategory =
+                    state.categoryList.find { it.categoryId == action.selectedCategoryId }
                 state.copy(
                     pointId = action.pointId ?: DEFAULT_LONG,
                     pointName = action.pointName,
-                    motivation=action.motivation,
-                    reward=action.reward,
+                    motivation = action.motivation,
+                    reward = action.reward,
                     selectedCategory = selectedCategory,
                     selectedImageUri = action.selectedImageUri,
                     date = action.date

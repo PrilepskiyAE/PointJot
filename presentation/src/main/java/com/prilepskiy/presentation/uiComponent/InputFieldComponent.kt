@@ -43,6 +43,7 @@ fun InputFieldComponent(
             onValueChange = onValueChange,
             placeholder = { Text(placeholder) },
             maxLines = 4,
+
             isError = textValue.length > MAX_LEN_INPUT_BASIC,
             colors = OutlinedTextFieldDefaults.colors(
                 focusedTextColor = Gray90,

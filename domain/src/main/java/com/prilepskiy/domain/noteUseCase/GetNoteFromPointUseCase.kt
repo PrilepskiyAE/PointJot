@@ -18,7 +18,8 @@ class GetNoteFromPointUseCase @Inject constructor(private val repository: NoteRe
                     noteId = it.noteId,
                     pointId = it.pointId,
                     uri = it.uri,
-                    note = it.note
+                    note = it.note,
+                    date =  it.date
                 )
             }
         }.flowOn(Dispatchers.IO)

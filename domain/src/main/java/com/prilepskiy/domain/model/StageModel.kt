@@ -8,5 +8,5 @@ data class StageModel(
     val pointId: Long = DEFAULT_LONG,
     val title: String = EMPTY_STRING,
     val label: String = EMPTY_STRING,
-    val isActive: Boolean = true,
+    val isFinish: Boolean = false,
 )

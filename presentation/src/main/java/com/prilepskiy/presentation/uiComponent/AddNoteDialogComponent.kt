@@ -14,7 +14,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -28,11 +27,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.core.content.ContextCompat
 import com.prilepskiy.common.Blue600
-import com.prilepskiy.common.BodyTextStyles
 import com.prilepskiy.common.EMPTY_STRING
 import com.prilepskiy.common.Gray80
 import com.prilepskiy.common.Green500
-import com.prilepskiy.common.Red500
 import com.prilepskiy.common.Spaces
 import com.prilepskiy.common.saveImageAndUpdateDb
 import com.prilepskiy.domain.model.NoteModel
@@ -42,16 +39,17 @@ import com.prilepskiy.presentation.R
 fun AddNoteDialogComponent(
     noteModel: NoteModel,
     onDismiss: () -> Unit,
-    onConfirm: () -> Unit,
-) {
+    onConfirm: (noteModel: NoteModel,) -> Unit,
+) { var selectedImageUri by remember { mutableStateOf(noteModel.uri) }
+    var valueDescription by remember { mutableStateOf(noteModel.note) }
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Создание заметки") },
+        title = { Text(stringResource(R.string.create_note1),
+            color=Gray80) },
         shape = RoundedCornerShape(Spaces.space16),
         text = {
             val context = LocalContext.current
-            var selectedImageUri by remember { mutableStateOf(noteModel.uri) }
-            var valueDescription by remember { mutableStateOf(noteModel.uri) }
+
             val galleryLauncher = rememberLauncherForActivityResult(
                 contract = ActivityResultContracts.GetContent()
             )
@@ -115,7 +113,7 @@ fun AddNoteDialogComponent(
                     modifier = Modifier.padding(vertical = Spaces.space6),
                     label = stringResource(R.string.input5),
                     textValue = valueDescription,
-                    placeholder = "Описание",
+                    placeholder = stringResource(R.string.description),
                     onValueChange = {
                         valueDescription = it
                     },
@@ -128,7 +126,7 @@ fun AddNoteDialogComponent(
         confirmButton = {
             Button(
                 onClick = {
-                    onConfirm()
+                    onConfirm(noteModel.copy(uri = selectedImageUri,note=valueDescription))
                     onDismiss()
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = Green500)

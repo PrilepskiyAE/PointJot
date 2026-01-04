@@ -40,6 +40,7 @@ fun InputDialogComponent(
                     }
                 },
                 maxLines = 1,
+
                 singleLine = true,
                 placeholder = { Text(placeholder) },
 

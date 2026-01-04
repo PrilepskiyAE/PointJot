@@ -6,5 +6,5 @@ import com.prilepskiy.common.EMPTY_STRING
 data class CategoryModel(
     val categoryId: Long = DEFAULT_LONG,
     val categoryName: String = EMPTY_STRING,
-    val isActive: Boolean=false,
+    val isActive: Boolean = false,
 )

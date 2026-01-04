@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -18,25 +17,25 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.prilepskiy.common.Blue600
-import com.prilepskiy.common.BodyTextStyles
-import com.prilepskiy.common.EMPTY_STRING
 import com.prilepskiy.common.Gray80
 import com.prilepskiy.common.Green500
-import com.prilepskiy.common.Red500
 import com.prilepskiy.common.Spaces
+import com.prilepskiy.domain.model.StageModel
 import com.prilepskiy.presentation.R
 
 @Composable
 fun AddStageDialogComponent(
+    stageModel: StageModel,
     onDismiss: () -> Unit,
-    onConfirm: () -> Unit,
+    onConfirm: (stageModel: StageModel) -> Unit,
 ) {
+    var valueName by remember { mutableStateOf(stageModel.title) }
+    var valueDescription by remember { mutableStateOf(stageModel.label) }
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Создание этапа") },
+        title = { Text(stringResource(R.string.create_stage), color = Gray80) },
         text = {
-            var valueName by remember { mutableStateOf(EMPTY_STRING) }
-            var valueDescription by remember { mutableStateOf(EMPTY_STRING) }
+
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.Center
@@ -45,9 +44,9 @@ fun AddStageDialogComponent(
                     modifier = Modifier.padding(vertical = Spaces.space6),
                     label = stringResource(R.string.input1),
                     textValue = valueName,
-                    placeholder = "Название этапа",
+                    placeholder = stringResource(R.string.name_stage),
                     onValueChange = {
-                        valueName=it
+                        valueName = it
                     },
                 )
 
@@ -55,21 +54,24 @@ fun AddStageDialogComponent(
                     modifier = Modifier.padding(vertical = Spaces.space6),
                     label = stringResource(R.string.input5),
                     textValue = valueDescription,
-                    placeholder = "Описание",
+                    placeholder = stringResource(R.string.description),
                     onValueChange = {
-                        valueDescription=it
+                        valueDescription = it
                     },
                 )
 
 
             }
         },
-        containerColor= Blue600,
+        containerColor = Blue600,
         confirmButton = {
             Button(
                 onClick = {
-                    onConfirm()
-                    onDismiss()
+                    if (valueName.isNotEmpty() && valueDescription.isNotEmpty()) {
+                        onConfirm(stageModel.copy(title = valueName, label = valueDescription))
+                        onDismiss()
+                    }
+
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = Green500)
             ) {

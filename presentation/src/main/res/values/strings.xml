@@ -15,7 +15,7 @@
     <string name="all">Все</string>
     <string name="different">Разное</string>
     <string name="dialog_category_title">Введите название категории</string>
-    <string name="dialog_category_placeholder">название категории...</string>
+    <string name="dialog_category_placeholder">название категории…</string>
     <string name="save">Сохранить</string>
     <string name="cansel">Отмена</string>
     <string name="del">Удалить</string>
@@ -51,5 +51,11 @@
     <string name="detaillabel2">Мотивация:</string>
     <string name="detaillabel3">Награда:</string>
     <string name="detaillabel4">Категория:</string>
+    <string name="detaillabel5">Дата завершения</string>
+    <string name="create_note1">Создание заметки</string>
+    <string name="description">Описание</string>
+    <string name="create_stage">Создание этапа</string>
+    <string name="name_stage">Название этапа</string>
+    <string name="category_label_error">Нельзя удалить эту категорию.</string>
 
 </resources>

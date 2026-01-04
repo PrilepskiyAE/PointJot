@@ -1,6 +1,5 @@
 package com.prilepskiy.data.repository
 
-import android.util.Log
 import com.prilepskiy.common.emitFlow
 import com.prilepskiy.data.database.dao.CategoryDao
 import com.prilepskiy.data.database.entity.CategoryEntity
@@ -22,7 +21,7 @@ class CategoryRepository @Inject constructor(
     }
 
 
-    suspend fun deleteCategory(id: Long){
+    suspend fun deleteCategory(id: Long) {
         dao.deleteCategory(id)
 
     }

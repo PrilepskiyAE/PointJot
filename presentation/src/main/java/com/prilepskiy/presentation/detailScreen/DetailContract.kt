@@ -15,6 +15,11 @@ sealed class DetailIntent : MviIntent {
     data class OnClickDelete(val onDelete:()-> Unit) : DetailIntent()
     data class OnError(val error: String?) : DetailIntent()
     data class OnLoading(val isLoading: Boolean) : DetailIntent()
+    data class AddNote(val noteModel: NoteModel) : DetailIntent()
+    data class AddStage(val stageModel: StageModel) : DetailIntent()
+    data class OnSuccessStage(val stageModel: StageModel): DetailIntent()
+    data class OnDeleteStage(val stageModel: StageModel): DetailIntent()
+    data class OnDeleteNote(val noteModel: NoteModel): DetailIntent()
 }
 
 sealed class DetailAction : MviAction {
@@ -22,6 +27,8 @@ sealed class DetailAction : MviAction {
     data class GetCategory(val category: List<CategoryModel>) : DetailAction()
     data class OnError(val error: String?) : DetailAction()
     data class OnLoading(val isLoading: Boolean) : DetailAction()
+    data class GetStage(val stageList: List<StageModel>) : DetailAction()
+    data class GetNote(val noteList: List<NoteModel>) : DetailAction()
 
 }
 

@@ -26,7 +26,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddPointViewModel @Inject constructor(
-    private val addPointReducer: AddPointReducer,
+    addPointReducer: AddPointReducer,
     getAllCategoryUseCase: GetAllCategoryUseCase,
     private val addPointUseCase: AddPointUseCase,
     private val getPointUseCase: GetPointUseCase
@@ -65,7 +65,7 @@ class AddPointViewModel @Inject constructor(
                         ) {
                             addPointUseCase.invoke(
                                 PointModel(
-                                    pointId = intent.id.toLong(),
+                                    pointId = intent.id,
                                     categoryId = viewState.selectedCategory?.categoryId
                                         ?: ID_SECOND_CATEGORY,
                                     uri = viewState.selectedImageUri ?: EMPTY_STRING,
@@ -79,7 +79,7 @@ class AddPointViewModel @Inject constructor(
                                 )
                             )
                             intent.onClick.invoke()
-                        }else{
+                        } else {
                             onAction(OnLoading(false))
                         }
                     }
@@ -109,7 +109,7 @@ class AddPointViewModel @Inject constructor(
                                         )
                                     )
                                     intent.onClick.invoke()
-                                }else{
+                                } else {
 
                                     onAction(OnLoading(false))
                                 }

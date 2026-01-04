@@ -1,5 +1,6 @@
 package com.prilepskiy.presentation.mainScreen
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.prilepskiy.common.DEFAULT_INT
 import com.prilepskiy.common.ID_ALL_CATEGORY
@@ -44,6 +45,7 @@ class MainViewModel @Inject constructor(
                     }
                 }
             }
+
             is MainIntent.DeleteCategory -> {
                 viewModelScope.launch {
                     if (intent.item != viewState.categoryList.firstOrNull() && !intent.item.isActive) {
@@ -57,6 +59,7 @@ class MainViewModel @Inject constructor(
                     }
                 }
             }
+
             is MainIntent.OnClickCategory -> {
                 onAction(OnClickCategory(intent.item))
                 if (intent.item.categoryId == ID_ALL_CATEGORY) {
@@ -65,6 +68,7 @@ class MainViewModel @Inject constructor(
                     getPointByCategory(intent.item.categoryId)
                 }
             }
+
             is MainIntent.InitPoint -> {
                 onAction(OnClickTab(true))
                 getAllCategoryAction { list ->
@@ -88,6 +92,7 @@ class MainViewModel @Inject constructor(
                     getAllPoint(true)
                 }
             }
+
             is MainIntent.OnClickTab -> {
                 onAction(OnClickTab(intent.id == DEFAULT_INT))
                 if (viewState.activeCategoryId == ID_ALL_CATEGORY) {
@@ -104,28 +109,35 @@ class MainViewModel @Inject constructor(
         getCategory.invoke(categoryId)
             .subscribe(scope = viewModelScope, success = { list ->
                 onAction(GetPoint(list.filter { viewState.isActive == it.isActive }))
-            }, error = { onAction(OnError("Ой что-то пошло не так")) })
+            }, error = {
+                Log.d("TAG_Error", "ERROR $it")
+                onAction(OnError("Ой что-то пошло не так"))
+            })
     }
 
     fun getAllPoint(showLoading: Boolean) {
         getAllPointUseCase.invoke().subscribe(
             scope = viewModelScope,
             onStart = {
-                onAction(MainAction.OnLoading(showLoading))
+                onAction(OnLoading(showLoading))
             },
             success = { pointList ->
-                onAction(MainAction.GetPoint(pointList.filter { viewState.isActive == it.isActive }))
+                onAction(GetPoint(pointList.filter { viewState.isActive == it.isActive }))
             },
-            error = { onAction(MainAction.OnError("Ой что-то пошло не так")) })
+            error = {
+                Log.d("TAG_Error", "ERROR $it")
+                onAction(OnError("Ой что-то пошло не так"))
+            })
     }
 
     fun getAllCategoryAction(action: suspend (List<CategoryModel>) -> Unit) {
         getAllCategoryUseCase.invoke().subscribe(scope = viewModelScope, onStart = {
-            onAction(MainAction.OnLoading(true))
+            onAction(OnLoading(true))
         }, success = { list ->
             action.invoke(list)
         }, error = {
-            onAction(MainAction.OnError("Ой что-то пошло не так"))
+            Log.d("TAG_Error", "ERROR $it")
+            onAction(OnError("Ой что-то пошло не так"))
         })
     }
 }
