@@ -44,7 +44,8 @@ fun AddNoteDialogComponent(
     var valueDescription by remember { mutableStateOf(noteModel.note) }
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.create_note1)) },
+        title = { Text(stringResource(R.string.create_note1),
+            color=Gray80) },
         shape = RoundedCornerShape(Spaces.space16),
         text = {
             val context = LocalContext.current

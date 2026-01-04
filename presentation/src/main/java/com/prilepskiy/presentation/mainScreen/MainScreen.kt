@@ -1,6 +1,7 @@
 package com.prilepskiy.presentation.mainScreen
 
 import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -86,6 +87,7 @@ fun MainScreen(
         }
     } else {
         MainScreen(
+            context=context,
             categoryList = state.categoryList,
             pointList = state.pointList,
             goToPoint = goToPoint,
@@ -100,6 +102,7 @@ fun MainScreen(
 
 @Composable
 private fun MainScreen(
+    context: Context,
     categoryList: List<CategoryModel>,
     pointList: List<PointModel>,
     onClickChip: (CategoryModel) -> Unit,
@@ -160,9 +163,12 @@ private fun MainScreen(
                 colorTextActive = Blue500,
                 colorTextPassive = Gray600,
                 onClickLongChip = {
-                    if (it.categoryId != ID_ALL_CATEGORY && it.categoryId != ID_SECOND_CATEGORY) {
+                    if (it.categoryId != ID_ALL_CATEGORY && it.categoryId != ID_SECOND_CATEGORY && !it.isActive) {
                         deleteCategory = it
                         showDeleteDialog = true
+                    }else{
+                        Toast.makeText(context,
+                            context.getString(R.string.category_label_error), Toast.LENGTH_LONG).show()
                     }
                 },
                 onClickChip = onClickChip,

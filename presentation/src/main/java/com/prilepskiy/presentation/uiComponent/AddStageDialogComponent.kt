@@ -33,7 +33,7 @@ fun AddStageDialogComponent(
     var valueDescription by remember { mutableStateOf(stageModel.label) }
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.create_stage)) },
+        title = { Text(stringResource(R.string.create_stage), color = Gray80) },
         text = {
 
             Column(
@@ -46,7 +46,7 @@ fun AddStageDialogComponent(
                     textValue = valueName,
                     placeholder = stringResource(R.string.name_stage),
                     onValueChange = {
-                        valueName=it
+                        valueName = it
                     },
                 )
 
@@ -54,21 +54,21 @@ fun AddStageDialogComponent(
                     modifier = Modifier.padding(vertical = Spaces.space6),
                     label = stringResource(R.string.input5),
                     textValue = valueDescription,
-                    placeholder =stringResource(R.string.description),
+                    placeholder = stringResource(R.string.description),
                     onValueChange = {
-                        valueDescription=it
+                        valueDescription = it
                     },
                 )
 
 
             }
         },
-        containerColor= Blue600,
+        containerColor = Blue600,
         confirmButton = {
             Button(
                 onClick = {
-                    if (valueName.isNotEmpty() && valueDescription.isNotEmpty()){
-                        onConfirm(stageModel.copy(title = valueName,label=valueDescription))
+                    if (valueName.isNotEmpty() && valueDescription.isNotEmpty()) {
+                        onConfirm(stageModel.copy(title = valueName, label = valueDescription))
                         onDismiss()
                     }
 
