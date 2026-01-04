@@ -24,19 +24,22 @@ import com.prilepskiy.common.Gray80
 import com.prilepskiy.common.Green500
 import com.prilepskiy.common.Red500
 import com.prilepskiy.common.Spaces
+import com.prilepskiy.domain.model.StageModel
 import com.prilepskiy.presentation.R
 
 @Composable
 fun AddStageDialogComponent(
+    stageModel: StageModel,
     onDismiss: () -> Unit,
-    onConfirm: () -> Unit,
+    onConfirm: (stageModel: StageModel) -> Unit,
 ) {
+    var valueName by remember { mutableStateOf(stageModel.title) }
+    var valueDescription by remember { mutableStateOf(stageModel.label) }
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text("Создание этапа") },
         text = {
-            var valueName by remember { mutableStateOf(EMPTY_STRING) }
-            var valueDescription by remember { mutableStateOf(EMPTY_STRING) }
+
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.Center
@@ -68,8 +71,11 @@ fun AddStageDialogComponent(
         confirmButton = {
             Button(
                 onClick = {
-                    onConfirm()
-                    onDismiss()
+                    if (valueName.isNotEmpty() && valueDescription.isNotEmpty()){
+                        onConfirm(stageModel.copy(title = valueName,label=valueDescription))
+                        onDismiss()
+                    }
+
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = Green500)
             ) {

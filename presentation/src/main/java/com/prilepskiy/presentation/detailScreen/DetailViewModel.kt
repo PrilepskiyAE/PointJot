@@ -69,6 +69,13 @@ class DetailViewModel @Inject constructor(
                     }
                 }
             }
+
+            is DetailIntent.AddNote -> {
+                Log.d("TAG000", "handleIntent: ${intent.noteModel}")
+            }
+            is DetailIntent.AddStage -> {
+                Log.d("TAG000", "handleIntent: ${intent.stageModel}")
+            }
         }
     }
 }

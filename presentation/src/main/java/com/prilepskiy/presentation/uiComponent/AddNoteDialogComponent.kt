@@ -42,16 +42,16 @@ import com.prilepskiy.presentation.R
 fun AddNoteDialogComponent(
     noteModel: NoteModel,
     onDismiss: () -> Unit,
-    onConfirm: () -> Unit,
-) {
+    onConfirm: (noteModel: NoteModel,) -> Unit,
+) { var selectedImageUri by remember { mutableStateOf(noteModel.uri) }
+    var valueDescription by remember { mutableStateOf(noteModel.uri) }
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text("Создание заметки") },
         shape = RoundedCornerShape(Spaces.space16),
         text = {
             val context = LocalContext.current
-            var selectedImageUri by remember { mutableStateOf(noteModel.uri) }
-            var valueDescription by remember { mutableStateOf(noteModel.uri) }
+
             val galleryLauncher = rememberLauncherForActivityResult(
                 contract = ActivityResultContracts.GetContent()
             )
@@ -128,7 +128,7 @@ fun AddNoteDialogComponent(
         confirmButton = {
             Button(
                 onClick = {
-                    onConfirm()
+                    onConfirm(noteModel.copy(uri = selectedImageUri,note=valueDescription))
                     onDismiss()
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = Green500)

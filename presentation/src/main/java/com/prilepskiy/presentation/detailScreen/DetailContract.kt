@@ -15,6 +15,9 @@ sealed class DetailIntent : MviIntent {
     data class OnClickDelete(val onDelete:()-> Unit) : DetailIntent()
     data class OnError(val error: String?) : DetailIntent()
     data class OnLoading(val isLoading: Boolean) : DetailIntent()
+    data class AddNote(val noteModel: NoteModel) : DetailIntent()
+    data class AddStage(val stageModel: StageModel) : DetailIntent()
+
 }
 
 sealed class DetailAction : MviAction {
