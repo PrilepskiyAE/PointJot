@@ -59,7 +59,7 @@ fun PointCardComponent(value: PointModel, goToPoint: (Long) -> Unit) {
             .fillMaxSize()
             .padding(Spaces.space8)) {
             if (value.uri.isNotEmpty()) {
-                PhotoCardComponent(path = value.uri, size = Spaces.space150, onClick = {})
+                PhotoCardComponent(path = value.uri, size = Spaces.space150, onClick = {},isClicable = false)
             } else {
                 Box(modifier = Modifier
                     .size(Spaces.space150)

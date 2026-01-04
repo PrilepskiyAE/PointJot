@@ -182,7 +182,8 @@ private fun AddPointScreen(
             if (selectedImageUri != null) {
                 PhotoCardComponent(
                     modifier = Modifier.align(Alignment.CenterHorizontally),
-                    path = selectedImageUri
+                    path = selectedImageUri,
+                    isClicable = true
                 ) {
                     openGallery()
                 }

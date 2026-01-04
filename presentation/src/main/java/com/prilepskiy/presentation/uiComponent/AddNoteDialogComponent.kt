@@ -99,7 +99,8 @@ fun AddNoteDialogComponent(
                 if (selectedImageUri.isNotEmpty()) {
                     PhotoCardComponent(
                         modifier = Modifier.align(Alignment.CenterHorizontally),
-                        path = selectedImageUri
+                        path = selectedImageUri,
+                        isClicable = true
                     ) {
                         openGallery()
                     }

@@ -260,7 +260,8 @@ fun DetailTabScreen(
         if (point.uri.isNotEmpty()) {
             PhotoCardComponent(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
-                path = point.uri
+                path = point.uri,
+                isClicable = false
             ) {}
         } else {
             Box(
