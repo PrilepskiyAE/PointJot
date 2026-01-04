@@ -35,11 +35,11 @@ fun StageItemComponent(
 ) {
     Column() {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Checkbox(checked = stageModel.isActive, onCheckedChange = {
-                val currentIsActive = stageModel.isActive
-                onSuccessStage.invoke(stageModel.copy(isActive = !currentIsActive))
+            Checkbox(checked = stageModel.isFinish, onCheckedChange = {
+                val currentIsActive = stageModel.isFinish
+                onSuccessStage.invoke(stageModel.copy(isFinish = !currentIsActive))
             })
-            Column(modifier = Modifier.simpleClickable() {
+            Column(modifier = Modifier.weight(1f).simpleClickable() {
                 openStage.invoke(stageModel)
             }) {
                 Text(

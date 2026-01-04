@@ -55,7 +55,7 @@ fun CategorySpinnerComponent(
             Text(
                 text = selectedName,
                 color = if (selectedCategory == null) Gray80 else Gray90,
-                modifier = Modifier.weight(1f) // Занимает всё пространство
+                modifier = Modifier.weight(1f)
             )
             Icon(
                 imageVector = if (expanded) Icons.Default.KeyboardArrowUp

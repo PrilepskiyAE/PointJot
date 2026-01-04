@@ -15,16 +15,19 @@ abstract class MviBaseViewModel<S : MviState, A : MviAction, I : MviIntent>() : 
     var viewState by mutableStateOf(initState())
     abstract var reducer: Reducer<A, S>
     private val actions = MutableSharedFlow<A>()
+
     init {
         actions.onEach { action ->
             viewState = reducer.reduce(action, viewState)
         }.launchIn(viewModelScope)
     }
+
     abstract fun initState(): S
     abstract fun handleIntent(intent: I)
     fun onIntent(intent: I) {
         handleIntent(intent)
     }
+
     fun onAction(action: A) {
         viewModelScope.launch {
             actions.emit(action)

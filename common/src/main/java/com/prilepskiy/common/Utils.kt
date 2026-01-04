@@ -83,12 +83,12 @@ fun deleteImageFromPrivateStorage(
         if (!file.exists() || !file.isFile) return false
         val isDeleted = file.delete()
         isDeleted
-    } catch (e: Exception) {
+    } catch (_: Exception) {
         false
     }
 }
 
-fun saveImageAndUpdateDb(context: Context, uri: Uri, saveUri: (path: String?) -> Unit,) {
+fun saveImageAndUpdateDb(context: Context, uri: Uri, saveUri: (path: String?) -> Unit) {
     val localPath = copyImageToPrivateStorage(context, uri)
     if (localPath != null) {
         saveUri(localPath)

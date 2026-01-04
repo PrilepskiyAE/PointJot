@@ -1,18 +1,17 @@
 package com.prilepskiy.common
 
-const val DEFAULT_FLOAT = 0.0F
 const val DEFAULT_LONG = 0L
-const val DEFAULT_INT= 0
+const val DEFAULT_INT = 0
 
-const val MAX_LEN_CATEGORY= 18
-const val MAX_LEN_INPUT_BASIC= 120
-const val ID_ALL_CATEGORY=1L
-const val ID_SECOND_CATEGORY=2L
+const val MAX_LEN_CATEGORY = 18
+const val MAX_LEN_INPUT_BASIC = 120
+const val ID_ALL_CATEGORY = 1L
+const val ID_SECOND_CATEGORY = 2L
 const val EMPTY_STRING = ""
 
-const val TAB_DETAIL= 0
-const val TAB_STAGE=1
-const val TAB_NOTE=2
+const val TAB_DETAIL = 0
+const val TAB_STAGE = 1
+const val TAB_NOTE = 2
 
 const val VERSION_DATABASE = 1
 

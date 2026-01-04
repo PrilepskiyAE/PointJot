@@ -10,14 +10,14 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class GetNoteByIdUseCase  @Inject constructor(private val repository: NoteRepository) {
+class GetNoteByIdUseCase @Inject constructor(private val repository: NoteRepository) {
     operator fun invoke(id: Long): Flow<NoteModel> {
         return repository.getNoteById(id).map { model ->
             NoteModel(
-                noteId=model.noteId,
-                pointId=model.pointId,
-                uri=model.uri,
-                note=model.note
+                noteId = model.noteId,
+                pointId = model.pointId,
+                uri = model.uri,
+                note = model.note
             )
         }.flowOn(Dispatchers.IO)
     }

@@ -1,6 +1,5 @@
 package com.prilepskiy.presentation.detailScreen
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,8 +12,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
@@ -129,9 +128,9 @@ fun DetailScreen(
             onDeletePoint = { viewModel.onIntent(DetailIntent.OnClickDelete { onPopBack.invoke() }) },
             addNote = { openDialogAddNote = Pair(true, it) },
             addStage = { openDialogAddStage = Pair(true, it) },
-            onSuccessStage = {},
-            onDeleteStage = {},
-            onDeleteNote = {},
+            onSuccessStage = { viewModel.onIntent(DetailIntent.OnSuccessStage(it)) },
+            onDeleteStage = { viewModel.onIntent(DetailIntent.OnDeleteStage(it)) },
+            onDeleteNote = { viewModel.onIntent(DetailIntent.OnDeleteNote(it)) },
         )
     }
 
@@ -155,6 +154,7 @@ fun DetailScreen(
 ) {
     var tabId by remember { mutableIntStateOf(DEFAULT_INT) }
 
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -172,7 +172,7 @@ fun DetailScreen(
                 onBackPressed = onPopBack,
                 textColor = Gray80,
                 iconColor = Gray80,
-                firstIcon = Icons.Default.ArrowBack,
+                firstIcon = Icons.AutoMirrored.Filled.ArrowBack,
                 secondIcon = Icons.Default.Check,
                 onSecondClick = onSuccessPoint,
                 thirdIcon = Icons.Filled.Delete,
@@ -368,11 +368,11 @@ fun NoteTabScreen(
         }
     } else {
         LazyColumn {
-            items(notes.size){
+            items(notes.size) {
                 NoteItemComponent(
-                    noteModel=notes[it],
+                    noteModel = notes[it],
                     openNote = updateNote,
-                    onDeleteNote=onDeleteNote
+                    onDeleteNote = onDeleteNote
                 )
             }
             item {
@@ -399,12 +399,12 @@ fun StageTabScreen(
         }
     } else {
         LazyColumn {
-            items(stages.size){
+            items(stages.size) {
                 StageItemComponent(
-                    stageModel=stages[it],
-                    onSuccessStage=onSuccessStage,
+                    stageModel = stages[it],
+                    onSuccessStage = onSuccessStage,
                     openStage = updateStage,
-                    onDeleteStage=onDeleteStage
+                    onDeleteStage = onDeleteStage
                 )
 
             }

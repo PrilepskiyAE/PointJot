@@ -5,7 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.prilepskiy.data.database.entity.NoteEntity
-import kotlinx.coroutines.flow.Flow
+
 
 @Dao
 interface NoteDao {
@@ -23,6 +23,9 @@ interface NoteDao {
 
     @Query("DELETE FROM  NoteEntity WHERE noteId=:id")
     suspend fun deleteNote(id: Long)
+
+    @Query("DELETE FROM  NoteEntity WHERE pointId=:id")
+    suspend fun deleteNotesForPoint(id: Long)
 
 
 }

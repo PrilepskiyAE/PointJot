@@ -16,7 +16,7 @@ class GetStageByIdUseCase @Inject constructor(private val repository: StageRepos
                 pointId = model.pointId,
                 title = model.title,
                 label = model.label,
-                isActive = model.isActive
+                isFinish = model.isFinish
             )
         }.flowOn(Dispatchers.IO)
     }

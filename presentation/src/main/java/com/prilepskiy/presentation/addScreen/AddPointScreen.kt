@@ -15,7 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -42,7 +42,6 @@ import com.prilepskiy.presentation.uiComponent.InputFieldComponent
 import com.prilepskiy.presentation.uiComponent.LoadingComponent
 import com.prilepskiy.presentation.uiComponent.PhotoCardComponent
 import com.prilepskiy.presentation.uiComponent.ToolbarStandardComponent
-
 
 @Composable
 fun AddPointScreen(
@@ -92,7 +91,7 @@ fun AddPointScreen(
                 viewModel.onIntent(AddPointIntent.ChangeDate(it))
             },
             saveOnClick = {
-                viewModel.onIntent(AddPointIntent.OnClickSave(point){
+                viewModel.onIntent(AddPointIntent.OnClickSave(point) {
                     onPopBack.invoke()
                 })
 
@@ -174,7 +173,7 @@ private fun AddPointScreen(
             onBackPressed = onPopBack,
             textColor = Gray80,
             iconColor = Gray80,
-            firstIcon = Icons.Default.ArrowBack,
+            firstIcon = Icons.AutoMirrored.Filled.ArrowBack,
             secondIcon = Icons.Default.Check,
             onSecondClick = { saveOnClick.invoke() }
         )

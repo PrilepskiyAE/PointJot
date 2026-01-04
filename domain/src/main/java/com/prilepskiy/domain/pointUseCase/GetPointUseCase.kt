@@ -1,28 +1,34 @@
 package com.prilepskiy.domain.pointUseCase
 
 import com.prilepskiy.data.repository.PointRepository
+import com.prilepskiy.data.repository.StageRepository
 import com.prilepskiy.domain.model.PointModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.single
 import javax.inject.Inject
 
-class GetPointUseCase@Inject constructor(private val repository: PointRepository) {
+class GetPointUseCase @Inject constructor(
+    private val repository: PointRepository,
+    private val stageRepository: StageRepository
+) {
     operator fun invoke(id: Long): Flow<List<PointModel>> {
-        return repository.getPoint(id).map { model ->
-            model.map {
+        return repository.getPoint(id).map { models ->
+            models.map { model ->
+                val allStage = stageRepository.getStageFromPoint(model.pointId).single()
                 PointModel(
-                    pointId=it.pointId,
-                    categoryId = it.categoryId,
-                    pointName = it.pointName,
-                    uri = it.uri,
-                    motivation=it.motivation,
-                    reward=it.reward,
-                    date=it.date,
-                    isActive=it.isActive,
-                    fullNote=it.fullNote,
-                    colFinished=it.colFinished
+                    pointId = model.pointId,
+                    categoryId = model.categoryId,
+                    pointName = model.pointName,
+                    uri = model.uri,
+                    motivation = model.motivation,
+                    reward = model.reward,
+                    date = model.date,
+                    isActive = model.isActive,
+                    fullNote = allStage.size.toLong(),
+                    colFinished = allStage.filter { it.isFinish }.size.toLong()
                 )
             }
         }.flowOn(Dispatchers.IO)

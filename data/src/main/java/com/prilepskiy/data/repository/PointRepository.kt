@@ -1,6 +1,5 @@
 package com.prilepskiy.data.repository
 
-import android.util.Log
 import com.prilepskiy.common.emitFlow
 import com.prilepskiy.data.database.dao.PointDao
 import com.prilepskiy.data.database.entity.PointEntity
@@ -23,7 +22,7 @@ class PointRepository @Inject constructor(
     }
 
 
-    suspend fun insertPoint(pointEntity: PointEntity)  {
+    suspend fun insertPoint(pointEntity: PointEntity) {
         dao.insert(pointEntity)
     }
 
@@ -35,11 +34,12 @@ class PointRepository @Inject constructor(
     fun getCategory(categoryId: Long): Flow<List<PointEntity>> = emitFlow {
         dao.getCategory(categoryId)
     }
+
     suspend fun deletePoint(id: Long) {
         dao.deletePoint(id)
     }
 
-    suspend fun deletePointByCategory(id: Long){
+    suspend fun deletePointByCategory(id: Long) {
         dao.deletePointByCategory(id)
     }
 

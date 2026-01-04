@@ -13,13 +13,11 @@ class MainReducer @Inject constructor() : Reducer<MainAction, MainState> {
             list.add(action.item)
             state.copy(categoryList = list, isLoading = false)
         }
-
         is MainAction.DeleteCategory -> {
             val list = state.categoryList.toMutableList()
             list.remove(action.item)
             state.copy(categoryList = list, isLoading = false)
         }
-
         is MainAction.OnClickCategory -> {
             val result = state.categoryList.map { item ->
                 if (item == action.item) {
@@ -30,10 +28,9 @@ class MainReducer @Inject constructor() : Reducer<MainAction, MainState> {
             }
             state.copy(categoryList = result, activeCategoryId = action.item.categoryId)
         }
-
         is MainAction.GetPoint -> state.copy(pointList = action.pointList, isLoading = false)
         is MainAction.OnClickTab -> {
-            state.copy(isActive = action.isActive,)
+            state.copy(isActive = action.isActive)
         }
     }
 }

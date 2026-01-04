@@ -19,7 +19,7 @@ class StageRepository @Inject constructor(
         dao.getStageFromPoint(id)
     }
 
-    fun insert(stageEntity: StageEntity) = emitFlow {
+    suspend fun insert(stageEntity: StageEntity) {
         dao.insert(stageEntity)
     }
 
@@ -28,5 +28,11 @@ class StageRepository @Inject constructor(
     }
 
 
-    fun deleteStage(id: Long) = emitFlow { dao.deleteStage(id) }
+    suspend fun deleteStage(id: Long) {
+        dao.deleteStage(id)
+    }
+
+    suspend fun deleteStageForPoint(id: Long) {
+        dao.deleteStageForPoint(id)
+    }
 }

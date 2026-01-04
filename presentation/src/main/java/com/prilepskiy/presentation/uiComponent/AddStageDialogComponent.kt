@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -18,11 +17,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.prilepskiy.common.Blue600
-import com.prilepskiy.common.BodyTextStyles
-import com.prilepskiy.common.EMPTY_STRING
 import com.prilepskiy.common.Gray80
 import com.prilepskiy.common.Green500
-import com.prilepskiy.common.Red500
 import com.prilepskiy.common.Spaces
 import com.prilepskiy.domain.model.StageModel
 import com.prilepskiy.presentation.R
@@ -37,7 +33,7 @@ fun AddStageDialogComponent(
     var valueDescription by remember { mutableStateOf(stageModel.label) }
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Создание этапа") },
+        title = { Text(stringResource(R.string.create_stage)) },
         text = {
 
             Column(
@@ -48,7 +44,7 @@ fun AddStageDialogComponent(
                     modifier = Modifier.padding(vertical = Spaces.space6),
                     label = stringResource(R.string.input1),
                     textValue = valueName,
-                    placeholder = "Название этапа",
+                    placeholder = stringResource(R.string.name_stage),
                     onValueChange = {
                         valueName=it
                     },
@@ -58,7 +54,7 @@ fun AddStageDialogComponent(
                     modifier = Modifier.padding(vertical = Spaces.space6),
                     label = stringResource(R.string.input5),
                     textValue = valueDescription,
-                    placeholder = "Описание",
+                    placeholder =stringResource(R.string.description),
                     onValueChange = {
                         valueDescription=it
                     },
