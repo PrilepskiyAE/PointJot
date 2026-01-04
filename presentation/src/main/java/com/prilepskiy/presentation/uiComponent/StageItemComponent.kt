@@ -17,9 +17,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import com.prilepskiy.common.BodyTextStyles
-import com.prilepskiy.common.Gray100
+import com.prilepskiy.common.Gray300
 import com.prilepskiy.common.Gray80
 import com.prilepskiy.common.LabelTextStyles
 import com.prilepskiy.common.Spaces
@@ -39,24 +40,28 @@ fun StageItemComponent(
                 val currentIsActive = stageModel.isFinish
                 onSuccessStage.invoke(stageModel.copy(isFinish = !currentIsActive))
             })
-            Column(modifier = Modifier.weight(1f).simpleClickable() {
-                openStage.invoke(stageModel)
-            }) {
+            Column(modifier = Modifier
+                .weight(1f)
+                .simpleClickable() {
+                    openStage.invoke(stageModel)
+                }) {
                 Text(
                     modifier = Modifier.padding(horizontal = Spaces.space16),
                     text = stageModel.title,
-                    style = BodyTextStyles.Medium,
-                    overflow= TextOverflow.Ellipsis,
-                    maxLines=2,
-                    color = Gray80
+                    style = BodyTextStyles.Large,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 8,
+                    color = Gray80,
+                    textDecoration= if (stageModel.isFinish) TextDecoration.LineThrough else null
                 )
                 Text(
                     modifier = Modifier.padding(horizontal = Spaces.space16),
                     text = stageModel.label,
-                    style = LabelTextStyles.Small,
-                    overflow= TextOverflow.Ellipsis,
-                    maxLines=2,
-                    color = Gray100
+                    style = LabelTextStyles.ExtraSmall,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 8,
+                    color = Gray300,
+                    textDecoration= if (stageModel.isFinish) TextDecoration.LineThrough else null
                 )
             }
             IconButton(onClick = { onDeleteStage.invoke(stageModel) }) {

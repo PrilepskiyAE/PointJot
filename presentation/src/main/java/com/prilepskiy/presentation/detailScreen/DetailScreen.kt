@@ -60,6 +60,7 @@ import com.prilepskiy.presentation.uiComponent.PhotoCardComponent
 import com.prilepskiy.presentation.uiComponent.StageItemComponent
 import com.prilepskiy.presentation.uiComponent.TabsStandardComponents
 import com.prilepskiy.presentation.uiComponent.ToolbarStandardComponent
+import com.prilepskiy.presentation.uiComponent.dateFormat
 
 @Composable
 fun DetailScreen(
@@ -268,40 +269,43 @@ fun DetailTabScreen(
                     .background(Gray100)
             )
         }
-        Text(
-            modifier = Modifier
-                .padding(Spaces.space8)
-                .align(alignment = Alignment.Start),
-            text = stringResource(R.string.detaillabel1),
-            style = TitleTextStyles.H4W700,
-            color = Gray90
-        )
-        Text(
-            modifier = Modifier
-                .padding(Spaces.space8)
-                .align(alignment = Alignment.Start),
-            text = point.pointName,
-            style = BodyTextStyles.Large,
-            color = Gray200
-        )
-
-        Text(
-            modifier = Modifier
-                .padding(Spaces.space8)
-                .align(alignment = Alignment.Start),
-            text = stringResource(R.string.detaillabel2),
-            style = TitleTextStyles.H4W700,
-            color = Gray90
-        )
-        Text(
-            modifier = Modifier
-                .padding(Spaces.space8)
-                .align(alignment = Alignment.Start),
-            text = point.motivation,
-            style = BodyTextStyles.Large,
-            color = Gray200
-        )
-
+        if (point.pointName.isNotEmpty()) {
+            Text(
+                modifier = Modifier
+                    .padding(Spaces.space8)
+                    .align(alignment = Alignment.Start),
+                text = stringResource(R.string.detaillabel1),
+                style = TitleTextStyles.H4W700,
+                color = Gray90
+            )
+            Text(
+                modifier = Modifier
+                    .padding(Spaces.space8)
+                    .align(alignment = Alignment.Start),
+                text = point.pointName,
+                style = BodyTextStyles.Large,
+                color = Gray200
+            )
+        }
+        if (point.motivation.isNotEmpty()) {
+            Text(
+                modifier = Modifier
+                    .padding(Spaces.space8)
+                    .align(alignment = Alignment.Start),
+                text = stringResource(R.string.detaillabel2),
+                style = TitleTextStyles.H4W700,
+                color = Gray90
+            )
+            Text(
+                modifier = Modifier
+                    .padding(Spaces.space8)
+                    .align(alignment = Alignment.Start),
+                text = point.motivation,
+                style = BodyTextStyles.Large,
+                color = Gray200
+            )
+        }
+        if (point.reward.isNotEmpty()){
         Text(
             modifier = Modifier
                 .padding(Spaces.space8)
@@ -318,6 +322,8 @@ fun DetailTabScreen(
             style = BodyTextStyles.Large,
             color = Gray200
         )
+        }
+
         Text(
             modifier = Modifier
                 .padding(Spaces.space8)
@@ -331,6 +337,23 @@ fun DetailTabScreen(
                 .padding(Spaces.space8)
                 .align(alignment = Alignment.Start),
             text = category.categoryName,
+            style = BodyTextStyles.Large,
+            color = Gray200
+        )
+
+        Text(
+            modifier = Modifier
+                .padding(Spaces.space8)
+                .align(alignment = Alignment.Start),
+            text = stringResource(R.string.detaillabel5),
+            style = TitleTextStyles.H4W700,
+            color = Gray90
+        )
+        Text(
+            modifier = Modifier
+                .padding(Spaces.space8)
+                .align(alignment = Alignment.Start),
+            text = dateFormat(point.date),
             style = BodyTextStyles.Large,
             color = Gray200
         )
@@ -370,6 +393,7 @@ fun NoteTabScreen(
         LazyColumn {
             items(notes.size) {
                 NoteItemComponent(
+                    pos = it,
                     noteModel = notes[it],
                     openNote = updateNote,
                     onDeleteNote = onDeleteNote

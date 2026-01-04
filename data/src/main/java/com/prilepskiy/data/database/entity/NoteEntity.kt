@@ -12,4 +12,5 @@ data class NoteEntity(
     val pointId: Long = DEFAULT_LONG,
     val uri: String = EMPTY_STRING,
     val note: String = EMPTY_STRING,
+    val date: Long = DEFAULT_LONG
 )

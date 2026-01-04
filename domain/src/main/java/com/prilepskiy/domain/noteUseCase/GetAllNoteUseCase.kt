@@ -17,7 +17,8 @@ class GetAllNoteUseCase @Inject constructor(private val repository: NoteReposito
                 noteId = it.noteId,
                 pointId = it.pointId,
                 uri = it.uri,
-                note = it.note
+                note = it.note,
+                date =  it.date
             )
         }
     }.flowOn(Dispatchers.IO)

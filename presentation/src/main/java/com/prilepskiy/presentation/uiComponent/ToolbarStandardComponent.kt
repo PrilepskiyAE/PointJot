@@ -1,8 +1,5 @@
 package com.prilepskiy.presentation.uiComponent
 
-
-import android.graphics.drawable.Icon
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,20 +13,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.prilepskiy.common.Black
 import com.prilepskiy.common.EMPTY_STRING
 import com.prilepskiy.common.Gray700
@@ -37,8 +33,6 @@ import com.prilepskiy.common.Spaces
 import com.prilepskiy.common.TitleTextStyles
 import com.prilepskiy.presentation.optional
 import com.prilepskiy.presentation.simpleClickable
-
-
 @Composable
 fun ToolbarStandardComponent(
     modifier: Modifier = Modifier,
@@ -47,12 +41,15 @@ fun ToolbarStandardComponent(
     iconColor: Color = Gray700,
     textColor: Color = Black,
     onBackPressed: (() -> Unit)? = null,
-    firstIcon:   ImageVector? = null,
+    firstIcon: ImageVector? = null,
     onSecondClick: (() -> Unit)? = null,
-    secondIcon:   ImageVector? = null,
+    secondIcon: ImageVector? = null,
     onThirdClick: (() -> Unit)? = null,
     thirdIcon: ImageVector? = null,
 ) {
+    val safeOnBackPressed = onBackPressed?.let { createDebouncedClickHandler(it) }
+    val safeOnSecondClick = onSecondClick?.let { createDebouncedClickHandler(it) }
+    val safeOnThirdClick = onThirdClick?.let { createDebouncedClickHandler(it) }
 
     Column(
         modifier = modifier
@@ -63,12 +60,12 @@ fun ToolbarStandardComponent(
         AppBar(
             modifier = modifier
         ) {
-            if (onBackPressed != null && firstIcon != null) {
+            if (safeOnBackPressed != null && firstIcon != null) {
                 Row(
                     modifier = Modifier
                         .padding(top = Spaces.space8, bottom = Spaces.space8)
                         .size(Spaces.space32)
-                        .simpleClickable(onClick = onBackPressed)
+                        .simpleClickable(onClick = safeOnBackPressed)
                         .optional(Modifier.background(White, RoundedCornerShape(Spaces.space12))) {
                             !transparentBackButton
                         },
@@ -106,7 +103,7 @@ fun ToolbarStandardComponent(
                 }
             }
 
-            if (onSecondClick != null && secondIcon != null) {
+            if (safeOnSecondClick != null && secondIcon != null) {
                 Row(
                     modifier = Modifier.fillMaxHeight(),
                     horizontalArrangement = Arrangement.End,
@@ -116,7 +113,7 @@ fun ToolbarStandardComponent(
                         modifier = Modifier
                             .padding(top = Spaces.space8, bottom = Spaces.space8)
                             .size(Spaces.space32)
-                            .simpleClickable(onClick = onSecondClick)
+                            .simpleClickable(onClick = safeOnSecondClick)
                             .optional(Modifier.background(White, RoundedCornerShape(Spaces.space12))) {
                                 !transparentBackButton
                             },
@@ -134,7 +131,7 @@ fun ToolbarStandardComponent(
                     Spacer(modifier = Modifier.width(Spaces.space12))
                 }
             }
-            if (onThirdClick != null && thirdIcon != null) {
+            if (safeOnThirdClick != null && thirdIcon != null) {
                 Row(
                     modifier = Modifier.fillMaxHeight(),
                     horizontalArrangement = Arrangement.End,
@@ -144,7 +141,7 @@ fun ToolbarStandardComponent(
                         modifier = Modifier
                             .padding(top = Spaces.space8, bottom = Spaces.space8)
                             .size(Spaces.space32)
-                            .simpleClickable(onClick = onThirdClick)
+                            .simpleClickable(onClick = safeOnThirdClick)
                             .optional(Modifier.background(White, RoundedCornerShape(Spaces.space12))) {
                                 !transparentBackButton
                             },
@@ -182,6 +179,23 @@ private inline fun AppBar(
         )
     }
 }
+
+@Composable
+private fun createDebouncedClickHandler(
+    onClick: () -> Unit,
+    timeoutMillis: Long = 5555L
+): () -> Unit {
+    var lastClickTime by remember { mutableStateOf(0L) }
+
+    return {
+        val currentTime = System.currentTimeMillis()
+        if (currentTime - lastClickTime > timeoutMillis) {
+            lastClickTime = currentTime
+            onClick()
+        }
+    }
+}
+
 
 
 

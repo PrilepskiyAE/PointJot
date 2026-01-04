@@ -1,5 +1,6 @@
 package com.prilepskiy.presentation.uiComponent
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,13 +19,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import com.prilepskiy.common.BodyTextStyles
+import com.prilepskiy.common.EMPTY_STRING
 import com.prilepskiy.common.Gray80
+import com.prilepskiy.common.Green600
 import com.prilepskiy.common.Spaces
 import com.prilepskiy.domain.model.NoteModel
 import com.prilepskiy.presentation.simpleClickable
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 @Composable
 fun NoteItemComponent(
+    pos:Int,
     noteModel: NoteModel,
     openNote: (noteModel: NoteModel) -> Unit,
     onDeleteNote: (noteModel: NoteModel) -> Unit,
@@ -36,10 +42,27 @@ fun NoteItemComponent(
             }) {
                 Text(
                     modifier = Modifier.padding(horizontal = Spaces.space16),
-                    text = noteModel.note,
-                    style = BodyTextStyles.Medium,
+                    text = "Запись №${(pos+1)}",
+                    style = BodyTextStyles.Large,
                     overflow = TextOverflow.Ellipsis,
-                    maxLines = 2,
+                    maxLines = 8,
+                    color = Green600
+                )
+                Text(
+                    modifier = Modifier.padding(horizontal = Spaces.space16),
+                    text = noteModel.note,
+                    style = BodyTextStyles.Large,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 8,
+                    color = Gray80
+                )
+
+                Text(
+                    modifier = Modifier.padding(horizontal = Spaces.space16),
+                    text = dateFormatTime(noteModel.date),
+                    style = BodyTextStyles.Small,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 8,
                     color = Gray80
                 )
 
@@ -60,5 +83,15 @@ fun NoteItemComponent(
                 .height(Spaces.space1)
                 .fillMaxWidth()
         ) {}
+    }
+}
+fun dateFormatTime(date: Long): String {
+    return try {
+        val formatter = SimpleDateFormat("HH:mm dd-MM-yyyy", Locale.getDefault())
+        val dateCorrect = if (date == 0L) System.currentTimeMillis() else date
+        formatter.format(dateCorrect)
+    } catch (e: Exception) {
+        Log.d("TAG_ERROR", "dateFormat: $e")
+        EMPTY_STRING
     }
 }

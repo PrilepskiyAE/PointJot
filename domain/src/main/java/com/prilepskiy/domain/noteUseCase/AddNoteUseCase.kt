@@ -17,7 +17,8 @@ class AddNoteUseCase @Inject constructor(private val repository: NoteRepository)
                     noteId = noteModel.noteId,
                     pointId = noteModel.pointId,
                     uri = noteModel.uri,
-                    note = noteModel.note
+                    note = noteModel.note,
+                    date= noteModel.date
                 )
             )
         }

@@ -1,5 +1,6 @@
 package com.prilepskiy.presentation.mainScreen
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.prilepskiy.common.DEFAULT_INT
 import com.prilepskiy.common.ID_ALL_CATEGORY
@@ -108,7 +109,10 @@ class MainViewModel @Inject constructor(
         getCategory.invoke(categoryId)
             .subscribe(scope = viewModelScope, success = { list ->
                 onAction(GetPoint(list.filter { viewState.isActive == it.isActive }))
-            }, error = { onAction(OnError("Ой что-то пошло не так")) })
+            }, error = {
+                Log.d("TAG_Error", "ERROR $it")
+                onAction(OnError("Ой что-то пошло не так"))
+            })
     }
 
     fun getAllPoint(showLoading: Boolean) {
@@ -120,7 +124,10 @@ class MainViewModel @Inject constructor(
             success = { pointList ->
                 onAction(GetPoint(pointList.filter { viewState.isActive == it.isActive }))
             },
-            error = { onAction(OnError("Ой что-то пошло не так")) })
+            error = {
+                Log.d("TAG_Error", "ERROR $it")
+                onAction(OnError("Ой что-то пошло не так"))
+            })
     }
 
     fun getAllCategoryAction(action: suspend (List<CategoryModel>) -> Unit) {
@@ -129,6 +136,7 @@ class MainViewModel @Inject constructor(
         }, success = { list ->
             action.invoke(list)
         }, error = {
+            Log.d("TAG_Error", "ERROR $it")
             onAction(OnError("Ой что-то пошло не так"))
         })
     }
