@@ -1,5 +1,6 @@
 package com.prilepskiy.domain.pointUseCase
 
+import android.util.Log
 import com.prilepskiy.data.repository.PointRepository
 import com.prilepskiy.data.repository.StageRepository
 import com.prilepskiy.domain.model.PointModel
@@ -20,6 +21,11 @@ class GetCategoryUseCase @Inject constructor(
         repository.getCategory(categoryId).map { models ->
             models.map { model ->
                 val allStage = stageRepository.getStageFromPoint(model.pointId).single()
+                val fullNote=allStage.size.toLong()
+                val colFinished=allStage.filter { it.isFinish }.size.toLong()
+                Log.d("TAG99991", "invoke: $allStage")
+                Log.d("TAG99992", "invoke: $fullNote")
+                Log.d("TAG99993", "invoke: $colFinished")
                 PointModel(
                     pointId = model.pointId,
                     categoryId = model.categoryId,
@@ -29,8 +35,8 @@ class GetCategoryUseCase @Inject constructor(
                     reward = model.reward,
                     date = model.date,
                     isActive = model.isActive,
-                    fullNote = allStage.size.toLong(),
-                    colFinished = allStage.filter { it.isFinish }.size.toLong()
+                    fullNote = fullNote,
+                    colFinished = colFinished
                 )
             }
         }.flowOn(Dispatchers.IO)
