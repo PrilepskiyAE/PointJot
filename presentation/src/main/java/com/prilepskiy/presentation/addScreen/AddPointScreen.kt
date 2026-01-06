@@ -163,7 +163,6 @@ private fun AddPointScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(Blue600)
-            .verticalScroll(scrollState),
     ) {
         ToolbarStandardComponent(
             modifier = Modifier.padding(vertical = Spaces.space10),
@@ -177,57 +176,62 @@ private fun AddPointScreen(
             secondIcon = Icons.Default.Check,
             onSecondClick = { saveOnClick.invoke() }
         )
-        if (selectedImageUri != null) {
-            PhotoCardComponent(
-                modifier = Modifier.align(Alignment.CenterHorizontally),
-                path = selectedImageUri
-            ) {
-                openGallery()
+        Column(
+            modifier = Modifier.verticalScroll(scrollState),
+        ) {
+            if (selectedImageUri != null) {
+                PhotoCardComponent(
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    path = selectedImageUri,
+                    isClicable = true
+                ) {
+                    openGallery()
+                }
+            } else {
+                EmptyPhotoCardComponent(modifier = Modifier.align(Alignment.CenterHorizontally)) {
+                    openGallery()
+                }
             }
-        } else {
-            EmptyPhotoCardComponent(modifier = Modifier.align(Alignment.CenterHorizontally)) {
-                openGallery()
-            }
-        }
 
-        InputFieldComponent(
-            modifier = Modifier.padding(vertical = Spaces.space6),
-            label = stringResource(R.string.input1),
-            textValue = pointName,
-            placeholder = stringResource(R.string.label1),
-            onValueChange = changePointName,
-        )
-        InputFieldComponent(
-            modifier = Modifier.padding(vertical = Spaces.space6),
-            label = stringResource(R.string.input2),
-            textValue = motivation,
-            placeholder = stringResource(R.string.label2),
-            onValueChange = changeMotivation,
-        )
-        InputFieldComponent(
-            modifier = Modifier.padding(vertical = Spaces.space6),
-            label = stringResource(R.string.input3),
-            textValue = reward,
-            placeholder = stringResource(R.string.label3),
-            onValueChange = changeReward,
-        )
-        DatePickerComponent(
-            modifier = Modifier.padding(vertical = Spaces.space6),
-            selectedDate = date,
-            onValueChange = changeDate
-        )
-        Text(
-            modifier = Modifier.padding(horizontal = Spaces.space16),
-            text = stringResource(R.string.input4),
-            style = LabelTextStyles.Small,
-            color = Gray80
-        )
-        CategorySpinnerComponent(
-            categoryList = categoryList,
-            selectedCategory = selectedCategory,
-            onCategorySelected = changeCategory
-        )
-        Box(modifier = Modifier.size(Spaces.space130))
+            InputFieldComponent(
+                modifier = Modifier.padding(vertical = Spaces.space6),
+                label = stringResource(R.string.input1),
+                textValue = pointName,
+                placeholder = stringResource(R.string.label1),
+                onValueChange = changePointName,
+            )
+            InputFieldComponent(
+                modifier = Modifier.padding(vertical = Spaces.space6),
+                label = stringResource(R.string.input2),
+                textValue = motivation,
+                placeholder = stringResource(R.string.label2),
+                onValueChange = changeMotivation,
+            )
+            InputFieldComponent(
+                modifier = Modifier.padding(vertical = Spaces.space6),
+                label = stringResource(R.string.input3),
+                textValue = reward,
+                placeholder = stringResource(R.string.label3),
+                onValueChange = changeReward,
+            )
+            DatePickerComponent(
+                modifier = Modifier.padding(vertical = Spaces.space6),
+                selectedDate = date,
+                onValueChange = changeDate
+            )
+            Text(
+                modifier = Modifier.padding(horizontal = Spaces.space16),
+                text = stringResource(R.string.input4),
+                style = LabelTextStyles.Small,
+                color = Gray80
+            )
+            CategorySpinnerComponent(
+                categoryList = categoryList,
+                selectedCategory = selectedCategory,
+                onCategorySelected = changeCategory
+            )
+            Box(modifier = Modifier.size(Spaces.space130))
+        }
     }
 }
 

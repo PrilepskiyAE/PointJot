@@ -20,6 +20,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -58,7 +59,7 @@ fun PointCardComponent(value: PointModel, goToPoint: (Long) -> Unit) {
             .fillMaxSize()
             .padding(Spaces.space8)) {
             if (value.uri.isNotEmpty()) {
-                PhotoCardComponent(path = value.uri, size = Spaces.space150, onClick = {})
+                PhotoCardComponent(path = value.uri, size = Spaces.space150, onClick = {},isClicable = false)
             } else {
                 Box(modifier = Modifier
                     .size(Spaces.space150)
@@ -104,7 +105,7 @@ fun PointCardComponent(value: PointModel, goToPoint: (Long) -> Unit) {
                             ),
                             color = Gray90,
                         )
-                        TaskProgressBar(value.colFinished, value.fullNote)
+                        TaskProgressBar((calculateProgressPercent(value.colFinished, value.fullNote) / 100f).times(100).toInt())
 
                     }
                 }
@@ -125,13 +126,10 @@ fun calculateProgressPercent(completed: Long, total: Long): Float {
 
 @Composable
 fun TaskProgressBar(
-    completedTasks: Long,
-    totalTasks: Long,
+    progress: Int,
     modifier: Modifier = Modifier
 ) {
-    val progress = remember {
-        (calculateProgressPercent(completedTasks, totalTasks) / 100f).times(100).toInt()
-    }
+
 
     Column(modifier = modifier) {
 

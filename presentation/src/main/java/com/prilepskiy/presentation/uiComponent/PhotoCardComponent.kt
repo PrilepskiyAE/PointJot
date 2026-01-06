@@ -73,7 +73,8 @@ fun PhotoCardComponent(
     modifier: Modifier = Modifier,
     path: String,
     size: Dp =Spaces.space300,
-    onClick: () -> Unit,
+    isClicable: Boolean,
+    onClick: () -> Unit?,
 ) {
     var isLoading by remember { mutableStateOf(true) }
 
@@ -87,10 +88,12 @@ fun PhotoCardComponent(
                 .memoryCachePolicy(CachePolicy.DISABLED)
                 .build(),
             contentDescription = "Photo",
-            modifier = Modifier
+            modifier = if (!isClicable) Modifier
                 .fillMaxSize()
                 .align(Alignment.Center)
-                .clickable(onClick = onClick),
+                else Modifier.fillMaxSize()
+                .align(Alignment.Center)
+                .clickable(onClick = {onClick.invoke()}),
             contentScale = ContentScale.Fit,
             placeholder = painterResource(id = R.drawable.ic_sync_error),
             error = painterResource(id = R.drawable.ic_foto_error),

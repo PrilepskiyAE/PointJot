@@ -1,5 +1,6 @@
 package com.prilepskiy.presentation.detailScreen
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -58,6 +59,7 @@ import com.prilepskiy.presentation.uiComponent.AddStageDialogComponent
 import com.prilepskiy.presentation.uiComponent.NoteItemComponent
 import com.prilepskiy.presentation.uiComponent.PhotoCardComponent
 import com.prilepskiy.presentation.uiComponent.StageItemComponent
+import com.prilepskiy.presentation.uiComponent.SuccessStageDialogComponent
 import com.prilepskiy.presentation.uiComponent.TabsStandardComponents
 import com.prilepskiy.presentation.uiComponent.ToolbarStandardComponent
 import com.prilepskiy.presentation.uiComponent.dateFormat
@@ -86,6 +88,9 @@ fun DetailScreen(
             )
         )
     }
+
+    var successPoint by remember { mutableStateOf(false) }
+
     LaunchedEffect(point) {
         point?.let {
             viewModel.onIntent(DetailIntent.Init(it))
@@ -112,6 +117,16 @@ fun DetailScreen(
         )
     }
 
+    if (successPoint) {
+        SuccessStageDialogComponent(onDismiss = {
+            successPoint = false
+        }, onConfirm = {
+            viewModel.onIntent(DetailIntent.OnClickSuccess { onPopBack.invoke() })
+            successPoint = false
+        }
+        )
+    }
+
     state.point?.let { pt ->
         DetailScreen(
             point = pt,
@@ -129,7 +144,15 @@ fun DetailScreen(
             onDeletePoint = { viewModel.onIntent(DetailIntent.OnClickDelete { onPopBack.invoke() }) },
             addNote = { openDialogAddNote = Pair(true, it) },
             addStage = { openDialogAddStage = Pair(true, it) },
-            onSuccessStage = { viewModel.onIntent(DetailIntent.OnSuccessStage(it)) },
+            onSuccessStage = {
+                viewModel.onIntent(DetailIntent.OnSuccessStage(it))
+                val check = state.stageList.filter { stage -> stage.isFinish }
+
+                if (check.isEmpty() && state.stageList.isNotEmpty() && state.point.isActive){
+                    successPoint=true
+                }
+
+            },
             onDeleteStage = { viewModel.onIntent(DetailIntent.OnDeleteStage(it)) },
             onDeleteNote = { viewModel.onIntent(DetailIntent.OnDeleteNote(it)) },
         )
@@ -260,7 +283,8 @@ fun DetailTabScreen(
         if (point.uri.isNotEmpty()) {
             PhotoCardComponent(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
-                path = point.uri
+                path = point.uri,
+                isClicable = false
             ) {}
         } else {
             Box(
@@ -305,23 +329,23 @@ fun DetailTabScreen(
                 color = Gray200
             )
         }
-        if (point.reward.isNotEmpty()){
-        Text(
-            modifier = Modifier
-                .padding(Spaces.space8)
-                .align(alignment = Alignment.Start),
-            text = stringResource(R.string.detaillabel3),
-            style = TitleTextStyles.H4W700,
-            color = Gray90
-        )
-        Text(
-            modifier = Modifier
-                .padding(Spaces.space8)
-                .align(alignment = Alignment.Start),
-            text = point.reward,
-            style = BodyTextStyles.Large,
-            color = Gray200
-        )
+        if (point.reward.isNotEmpty()) {
+            Text(
+                modifier = Modifier
+                    .padding(Spaces.space8)
+                    .align(alignment = Alignment.Start),
+                text = stringResource(R.string.detaillabel3),
+                style = TitleTextStyles.H4W700,
+                color = Gray90
+            )
+            Text(
+                modifier = Modifier
+                    .padding(Spaces.space8)
+                    .align(alignment = Alignment.Start),
+                text = point.reward,
+                style = BodyTextStyles.Large,
+                color = Gray200
+            )
         }
 
         Text(
