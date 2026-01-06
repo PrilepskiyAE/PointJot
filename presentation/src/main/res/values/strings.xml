@@ -17,6 +17,7 @@
     <string name="dialog_category_title">Введите название категории</string>
     <string name="dialog_category_placeholder">название категории…</string>
     <string name="save">Сохранить</string>
+    <string name="close">Завершить</string>
     <string name="cansel">Отмена</string>
     <string name="del">Удалить</string>
     <string name="delete_category">Удаление категории</string>
@@ -55,6 +56,8 @@
     <string name="create_note1">Создание заметки</string>
     <string name="description">Описание</string>
     <string name="create_stage">Создание этапа</string>
+    <string name="success_stage">Завершить цель?</string>
+    <string name="success_label_stage">Цель будет помечена как завершенная. При необходимости вы сможете восстановить цель</string>
     <string name="name_stage">Название этапа</string>
     <string name="category_label_error">Нельзя удалить эту категорию.</string>
 
