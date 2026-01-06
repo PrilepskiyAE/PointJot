@@ -23,9 +23,6 @@ class GetCategoryUseCase @Inject constructor(
                 val allStage = stageRepository.getStageFromPoint(model.pointId).single()
                 val fullNote=allStage.size.toLong()
                 val colFinished=allStage.filter { it.isFinish }.size.toLong()
-                Log.d("TAG99991", "invoke: $allStage")
-                Log.d("TAG99992", "invoke: $fullNote")
-                Log.d("TAG99993", "invoke: $colFinished")
                 PointModel(
                     pointId = model.pointId,
                     categoryId = model.categoryId,

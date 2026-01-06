@@ -141,7 +141,9 @@ class DetailViewModel @Inject constructor(
                     addStageUseCase.invoke(intent.stageModel)
                     viewState.point?.let { point ->
                         getStageForPointAction(point.pointId) {
+
                             onAction(DetailAction.GetStage(it))
+                            intent.onSuccess.invoke(it)
                         }
                     }
                 }

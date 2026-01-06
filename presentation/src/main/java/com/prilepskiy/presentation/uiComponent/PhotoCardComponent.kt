@@ -95,7 +95,7 @@ fun PhotoCardComponent(
                 .align(Alignment.Center)
                 .clickable(onClick = {onClick.invoke()}),
             contentScale = ContentScale.Fit,
-            placeholder = painterResource(id = R.drawable.ic_sync_error),
+ //           placeholder = painterResource(id = R.drawable.ic_sync_error), TODO Сильно бросается в глаза
             error = painterResource(id = R.drawable.ic_foto_error),
             onSuccess = {
                 isLoading = false
