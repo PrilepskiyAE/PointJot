@@ -17,7 +17,7 @@ sealed class DetailIntent : MviIntent {
     data class OnLoading(val isLoading: Boolean) : DetailIntent()
     data class AddNote(val noteModel: NoteModel) : DetailIntent()
     data class AddStage(val stageModel: StageModel) : DetailIntent()
-    data class OnSuccessStage(val stageModel: StageModel): DetailIntent()
+    data class OnSuccessStage(val stageModel: StageModel,val onSuccess:(List<StageModel>)-> Unit): DetailIntent()
     data class OnDeleteStage(val stageModel: StageModel): DetailIntent()
     data class OnDeleteNote(val noteModel: NoteModel): DetailIntent()
 }
