@@ -16,6 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -145,12 +146,10 @@ fun DetailScreen(
             addNote = { openDialogAddNote = Pair(true, it) },
             addStage = { openDialogAddStage = Pair(true, it) },
             onSuccessStage = {
-                viewModel.onIntent(DetailIntent.OnSuccessStage(it))
-                val check = state.stageList.filter { stage -> stage.isFinish }
-
-                if (check.isEmpty() && state.stageList.isNotEmpty() && state.point.isActive){
-                    successPoint=true
-                }
+                viewModel.onIntent(DetailIntent.OnSuccessStage(it){ list->
+                    val check = list.all { stage -> stage.isFinish }
+                    successPoint=check
+                })
 
             },
             onDeleteStage = { viewModel.onIntent(DetailIntent.OnDeleteStage(it)) },
@@ -197,7 +196,7 @@ fun DetailScreen(
                 textColor = Gray80,
                 iconColor = Gray80,
                 firstIcon = Icons.AutoMirrored.Filled.ArrowBack,
-                secondIcon = Icons.Default.Check,
+                secondIcon = if (!point.isActive) Icons.Default.Clear else Icons.Default.Check,
                 onSecondClick = onSuccessPoint,
                 thirdIcon = Icons.Filled.Delete,
                 onThirdClick = onDeletePoint
