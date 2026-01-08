@@ -67,7 +67,7 @@ fun AddStageDialogComponent(
         confirmButton = {
             Button(
                 onClick = {
-                    if (valueName.isNotEmpty() && valueDescription.isNotEmpty()) {
+                    if (valueName.isNotEmpty()) {
                         onConfirm(stageModel.copy(title = valueName, label = valueDescription))
                         onDismiss()
                     }

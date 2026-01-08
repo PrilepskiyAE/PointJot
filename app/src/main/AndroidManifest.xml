@@ -14,7 +14,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PointJot"
-        tools:targetApi="31" >
+        tools:targetApi="35" >
+        <meta-data
+            android:name="yandex_verification"
+            android:value="abc123xyz" />
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"

@@ -40,11 +40,12 @@ fun StageItemComponent(
                 val currentIsActive = stageModel.isFinish
                 onSuccessStage.invoke(stageModel.copy(isFinish = !currentIsActive))
             })
-            Column(modifier = Modifier
-                .weight(1f)
-                .simpleClickable() {
-                    openStage.invoke(stageModel)
-                }) {
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .simpleClickable() {
+                        openStage.invoke(stageModel)
+                    }) {
                 Text(
                     modifier = Modifier.padding(horizontal = Spaces.space16),
                     text = stageModel.title,
@@ -52,17 +53,19 @@ fun StageItemComponent(
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 8,
                     color = Gray80,
-                    textDecoration= if (stageModel.isFinish) TextDecoration.LineThrough else null
+                    textDecoration = if (stageModel.isFinish) TextDecoration.LineThrough else null
                 )
-                Text(
-                    modifier = Modifier.padding(horizontal = Spaces.space16),
-                    text = stageModel.label,
-                    style = LabelTextStyles.ExtraSmall,
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 8,
-                    color = Gray300,
-                    textDecoration= if (stageModel.isFinish) TextDecoration.LineThrough else null
-                )
+                if (stageModel.label.isNotEmpty()) {
+                    Text(
+                        modifier = Modifier.padding(horizontal = Spaces.space16),
+                        text = stageModel.label,
+                        style = LabelTextStyles.ExtraSmall,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 8,
+                        color = Gray300,
+                        textDecoration = if (stageModel.isFinish) TextDecoration.LineThrough else null
+                    )
+                }
             }
             IconButton(onClick = { onDeleteStage.invoke(stageModel) }) {
                 Icon(
