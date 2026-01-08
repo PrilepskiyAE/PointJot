@@ -1,6 +1,8 @@
 package com.prilepskiy.presentation.uiComponent
 
 import android.util.Log
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import com.prilepskiy.common.BodyTextStyles
 import com.prilepskiy.common.EMPTY_STRING
+import com.prilepskiy.common.Gray100
 import com.prilepskiy.common.Gray80
 import com.prilepskiy.common.Green600
 import com.prilepskiy.common.Spaces
@@ -36,7 +39,18 @@ fun NoteItemComponent(
     onDeleteNote: (noteModel: NoteModel) -> Unit,
 ) {
     Column() {
+
         Row(verticalAlignment = Alignment.CenterVertically) {
+            if (noteModel.uri.isNotEmpty()) {
+                PhotoCardComponent(
+                    size= Spaces.space100,
+                    modifier = Modifier.padding(start = Spaces.space8, bottom = Spaces.space2),
+                    path = noteModel.uri,
+                    isClicable = false
+                ) {}
+            }else{
+                Box(modifier =  Modifier.padding(start = Spaces.space8).size(Spaces.space100),)
+            }
             Column(modifier = Modifier.weight(1f).simpleClickable() {
                 openNote.invoke(noteModel)
             }) {
