@@ -1,6 +1,6 @@
-# MovieMessager
+# PointJot
 
-## used steck:
+## used:
 ## 1) Architecture:
 ###       1.1) MVI;
 ###       1.2) Clean arch;
