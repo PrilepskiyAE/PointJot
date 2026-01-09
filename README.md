@@ -15,6 +15,6 @@
 ###    3.1) Coroutines;
 ###    3.2) Flow;
 ---
-![Image alt](https://github.com/PrilepskiyAE/PointJot/blob/master/screen/0.jpg)
 ![Image alt](https://github.com/PrilepskiyAE/PointJot/blob/master/screen/1.jpg)
 ![Image alt](https://github.com/PrilepskiyAE/PointJot/blob/master/screen/2.jpg)
+![Image alt](https://github.com/PrilepskiyAE/PointJot/blob/master/screen/3.jpg)
