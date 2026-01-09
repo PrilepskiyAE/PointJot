@@ -10,7 +10,8 @@
 ## 2) Technology 
 ###      2.1) DI: Hilt;
 ###      2.2) Database: Room;
-###      2.4) Glide;
+###      2.4) Image: Coil3;
+###      2.5) UI: Compose
 ## 3) Asynchrony
 ###    3.1) Coroutines;
 ###    3.2) Flow;
