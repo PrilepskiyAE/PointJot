@@ -2,6 +2,8 @@ package com.prilepskiy.domain.categoryUseCase
 
 import com.prilepskiy.data.database.entity.CategoryEntity
 import com.prilepskiy.data.repository.CategoryRepository
+import com.prilepskiy.domain.categoryModel
+import com.prilepskiy.domain.expectedEntity
 import com.prilepskiy.domain.model.CategoryModel
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -21,14 +23,6 @@ class AddCategoryUseCaseTest {
     @Test
     fun test1() = runTest {
 
-        val categoryModel = CategoryModel(
-            categoryId = 1,
-            categoryName = "Test Category"
-        )
-        val expectedEntity = CategoryEntity(
-            categoryId = categoryModel.categoryId,
-            categoryName = categoryModel.categoryName
-        )
         coEvery { mockRepository.insert(expectedEntity) } coAnswers { Unit }
 
         useCase(categoryModel)

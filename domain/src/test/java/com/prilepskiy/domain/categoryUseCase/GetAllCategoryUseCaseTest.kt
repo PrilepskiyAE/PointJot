@@ -1,7 +1,8 @@
 package com.prilepskiy.domain.categoryUseCase
 
-import com.prilepskiy.data.database.entity.CategoryEntity
 import com.prilepskiy.data.repository.CategoryRepository
+import com.prilepskiy.domain.expectedCategoryModels
+import com.prilepskiy.domain.mockCategoryEntities
 import com.prilepskiy.domain.model.CategoryModel
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -20,19 +21,9 @@ class GetAllCategoryUseCaseTest {
         useCase = GetAllCategoryUseCase(mockRepository)
     }
     @Test
-    fun test1() = runTest{
-        val mockEntities = listOf(
-            CategoryEntity(categoryId = 1, categoryName = "Category 1"),
-            CategoryEntity(categoryId = 2, categoryName = "Category 2"),
-            CategoryEntity(categoryId = 3, categoryName = "Category 3")
-        )
+    fun test1() = runTest {
 
-        val expectedModels = listOf(
-            CategoryModel(categoryId = 1, categoryName = "Category 1", isActive = true),
-            CategoryModel(categoryId = 2, categoryName = "Category 2", isActive = false),
-            CategoryModel(categoryId = 3, categoryName = "Category 3", isActive = false)
-        )
-        coEvery { mockRepository.getAllCategory() } returns flowOf(mockEntities)
+        coEvery { mockRepository.getAllCategory() } returns flowOf(mockCategoryEntities)
 
         val resultFlow = useCase()
         var result: List<CategoryModel>? = null
@@ -40,10 +31,11 @@ class GetAllCategoryUseCaseTest {
         resultFlow.collect { collectedList ->
             result = collectedList
         }
-        assertEquals(expectedModels, result)
+        assertEquals(expectedCategoryModels, result)
     }
+
     @Test
-    fun test2() = runTest{
+    fun test2() = runTest {
         coEvery { mockRepository.getAllCategory() } returns flowOf(emptyList())
         val resultFlow = useCase()
         var result: List<CategoryModel>? = null

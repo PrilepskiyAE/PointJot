@@ -3,6 +3,7 @@ package com.prilepskiy.domain.categoryUseCase
 import com.prilepskiy.data.database.entity.CategoryEntity
 import com.prilepskiy.data.repository.CategoryRepository
 import com.prilepskiy.data.repository.PointRepository
+import com.prilepskiy.domain.categoryModel
 import com.prilepskiy.domain.model.CategoryModel
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -22,10 +23,7 @@ class DeleteCategoryUseCaseTest {
     }
     @Test
     fun test1() = runTest {
-        val categoryModel = CategoryModel(
-            categoryId = 1,
-            categoryName = "Test Category"
-        )
+
         coEvery {
             mockRepository.deleteCategory(categoryModel.categoryId)
             mokkRepositoryPoint.deletePointByCategory(categoryModel.categoryId)
